@@ -1,0 +1,8 @@
+.nav-link {
+  transition: border-bottom 0.5s ease;
+  border-bottom: 4px solid transparent;
+}
+
+.nav-link.active {
+  border-bottom: 4px solid #0d6efd;
+}
