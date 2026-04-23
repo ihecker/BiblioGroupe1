@@ -15,3 +15,4 @@ export const routes: Routes = [
   {path:"collection", component: CollectionPage},
   {path:"", component:AuteurPage, pathMatch:"full"}
 ];
+ 
