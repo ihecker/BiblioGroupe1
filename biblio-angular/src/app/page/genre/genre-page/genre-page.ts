@@ -17,6 +17,7 @@ import { CommonModule } from '@angular/common';
   templateUrl: './genre-page.html',
   styleUrl: './genre-page.css',
 })
+<<<<<<< Updated upstream
 export class GenrePage implements OnInit {
   private genreService: GenreService = inject(GenreService);
   private formBuilder: FormBuilder = inject(FormBuilder);
