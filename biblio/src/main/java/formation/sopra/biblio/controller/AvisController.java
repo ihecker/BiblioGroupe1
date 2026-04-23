@@ -8,6 +8,7 @@ import formation.sopra.biblio.dto.avis.AvisResponse;
 import formation.sopra.biblio.exception.AvisNotFoundException;
 import formation.sopra.biblio.model.Avis;
 import formation.sopra.biblio.repository.IDAOAvis;
+import formation.sopra.biblio.repository.IDAOLivre;
 
 import java.util.List;
 
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class AvisController {
 
     private final IDAOAvis daoAvis;
+    private final IDAOLivre daoLivre;
 
-    AvisController(IDAOAvis daoAvis) {
+    AvisController(IDAOAvis daoAvis, IDAOLivre daoLivre) {
         this.daoAvis = daoAvis;
+        this.daoLivre = daoLivre;
     }
 
     @GetMapping
@@ -35,7 +38,6 @@ public class AvisController {
                 .stream()
                 .map(AvisResponse::convert)
                 .toList();
-        ;
     }
 
     @GetMapping("/{id}")
@@ -50,7 +52,7 @@ public class AvisController {
         a.setNote(avisRequest.getNote());
         a.setCommentaire(avisRequest.getCommentaire());
         a.setDate(avisRequest.getDate());
-        a.setLivre(avisRequest.getLivre());
+        a.setLivre(daoLivre.findById(avisRequest.getLivreId()));
 
         return AvisResponse.convert(daoAvis.save(a));
     }
@@ -66,7 +68,7 @@ public class AvisController {
         a.setNote(avisRequest.getNote());
         a.setCommentaire(avisRequest.getCommentaire());
         a.setDate(avisRequest.getDate());
-        a.setLivre(avisRequest.getLivre());
+        a.setLivre(daoLivre.findById(avisRequest.getLivreId()));
 
         return AvisResponse.convert(daoAvis.save(a));
     }
