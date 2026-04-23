@@ -45,6 +45,36 @@ public class EditeurController {
         );
     }
 
+    @PutMapping("/{id}")
+    public EditeurResponse put(@PathVariable int id, @Valid @RequestBody EditeurRequest editeurRequest) {
+        Editeur editeur = daoEditeur.findById(id)
+                .orElseThrow( ()->new EditeurNotFoundException("Editeur with id:"+id+"does not exist"));
+        editeur.setNom(editeurRequest.getNom());
+        editeur.setPays(editeurRequest.getPays());
+        return EditeurResponse.convert(daoEditeur.save(editeur));
+    }
+
+    @PatchMapping("/{id")
+    public EditeurResponse patch(@PathVariable int id, @RequestBody EditeurRequest editeurRequest) {
+        Editeur editeur = daoEditeur.findById(id)
+                .orElseThrow( () -> new EditeurNotFoundException("Editeur with id:"+id+"does not exist") );
+        if (editeurRequest.getNom() != null && !editeurRequest.getNom().isBlank()) {
+            editeur.setNom(editeurRequest.getNom());
+        }
+        if (editeurRequest.getPays() != null && !editeurRequest.getPays().isBlank()) {
+            editeur.setPays(editeurRequest.getPays());
+        }
+        return EditeurResponse.convert(daoEditeur.save(editeur));
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable int id) {
+        /*
+            Recuperer tous les livres de l'editeur à supprimer, et mettre à null l'editeur,
+         */
+        daoEditeur.deleteById(id);
+    }
+
     
 
 
