@@ -8,5 +8,8 @@ import { GenreService } from '../../../service/genre/genre-service';
   styleUrl: './genre-page.css',
 })
 export class GenrePage implements OnInit {
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
   private genreService: GenreService = inject(GenreService);
 }

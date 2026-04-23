@@ -1,1 +1,4 @@
-export interface Collection {}
+export interface Collection {
+    id: number;
+    nom: string;
+}
