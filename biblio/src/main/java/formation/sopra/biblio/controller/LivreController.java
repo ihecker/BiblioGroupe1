@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import formation.sopra.biblio.dto.livre.request.LivreRequest;
 import formation.sopra.biblio.dto.livre.response.LivreResponse;
 import formation.sopra.biblio.model.Livre;
 import formation.sopra.biblio.repository.IDAOAuteur;
+import formation.sopra.biblio.repository.IDAOCollection;
 import formation.sopra.biblio.repository.IDAOEditeur;
+import formation.sopra.biblio.repository.IDAOGenre;
 import formation.sopra.biblio.repository.IDAOLivre;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -33,8 +34,8 @@ public class LivreController {
     private final IDAOGenre daoGenre;
 
     public LivreController(IDAOLivre daoLivre, IDAOAuteur daoAuteur, IDAOEditeur daoEditeur,
-            IDAOCollection daoCollection,
-            IDAOGenre daoGenre) {
+        IDAOCollection daoCollection,
+        IDAOGenre daoGenre) {
         this.daoLivre = daoLivre;
         this.daoAuteur = daoAuteur;
         this.daoEditeur = daoEditeur;

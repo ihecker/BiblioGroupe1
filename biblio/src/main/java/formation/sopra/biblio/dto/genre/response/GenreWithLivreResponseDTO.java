@@ -1,23 +1,26 @@
 package formation.sopra.biblio.dto.genre.response;
 
+import java.util.List;
+
 import org.springframework.beans.BeanUtils;
 
+import formation.sopra.biblio.dto.livre.response.LivreResponse;
 import formation.sopra.biblio.model.Genre;
-import formation.sopra.biblio.model.Livre;
 
 public class GenreWithLivreResponseDTO {
 	
 	private Integer id;
 	private String libelle;
-	private Livre livre;
+	private List<LivreResponse> livres;
+	
 	
 	public GenreWithLivreResponseDTO() {}
 	
 	
-	public GenreWithLivreResponseDTO(Integer id, String libelle, Livre livre) {
+	public GenreWithLivreResponseDTO(Integer id, String libelle, List<LivreResponse> livres) {
 		this.id = id;
 		this.libelle = libelle;
-		this.livre = livre;
+		this.livres = livres;
 	}
 	public Integer getId() {
 		return id;
@@ -25,8 +28,8 @@ public class GenreWithLivreResponseDTO {
 	public String getLibelle() {
 		return libelle;
 	}
-	public Livre getLivre() {
-		return livre;
+	public List<LivreResponse> getLivres() {
+		return livres;
 	}
 	public void setId(Integer id) {
 		this.id = id;
@@ -34,8 +37,8 @@ public class GenreWithLivreResponseDTO {
 	public void setLibelle(String libelle) {
 		this.libelle = libelle;
 	}
-	public void setLivre(Livre livre) {
-		this.livre = livre;
+	public void setLivres(List<LivreResponse> livres) {
+		this.livres = livres;
 	}
 	
 	public static GenreWithLivreResponseDTO convert(Genre genre) {
