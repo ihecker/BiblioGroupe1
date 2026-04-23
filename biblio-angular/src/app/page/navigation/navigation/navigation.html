@@ -1,9 +1,13 @@
-<a [routerLink]="['/livres']" routerLinkActive="active">LIVRES</a>
-|
-<a [routerLink]="['/genre']" routerLinkActive="active">GENRE</a>
-|
-<a [routerLink]="['/auteur']" routerLinkActive="active">AUTEUR</a>
-|
-<a [routerLink]="['/editeur']" routerLinkActive="active">EDITEUR</a>
-|
-<a [routerLink]="['/avis']" routerLinkActive="active">AVIS</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+
+    <div class="navbar-nav gap-3 column-gap-4">
+      <a class="nav-link" [routerLink]="['/livres']" routerLinkActive="active">LIVRES</a>
+      <a class="nav-link" [routerLink]="['/genre']" routerLinkActive="active">GENRE</a>
+      <a class="nav-link" [routerLink]="['/auteur']" routerLinkActive="active">AUTEUR</a>
+      <a class="nav-link" [routerLink]="['/editeur']" routerLinkActive="active">EDITEUR</a>
+      <a class="nav-link" [routerLink]="['/collection']" routerLinkActive="active">COLLECTION</a>
+    </div>
+
+  </div>
+</nav>
