@@ -1,1 +1,13 @@
 <p>auteur-page works!</p>
+
+
+<input [(ngModel)]="newAuteur.nom" placeholder="Nouveau auteur">
+<button (click)="addAuteur()">Ajouter</button>
+
+<ul>
+  <li *ngFor="let auteur of auteurs$ |async">
+    {{ auteur.nom }}
+    
+    <button (click)="deleteAuteur(auteur.id!)">Supprimer</button>
+  </li>
+</ul>

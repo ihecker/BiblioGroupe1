@@ -30,7 +30,6 @@ public class Avis {
 
     @ManyToOne
     @JoinColumn(name="livre_id")
-    @Column(nullable = false)
     private Livre livre;
     
     public Avis(Integer id, int note, String commentaire, LocalDate date, Livre livre) {
