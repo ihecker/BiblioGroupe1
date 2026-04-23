@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { GenreService } from '../../../service/genre/genre-service';
 
 @Component({
   selector: 'app-genre-page',
@@ -6,4 +7,6 @@ import { Component } from '@angular/core';
   templateUrl: './genre-page.html',
   styleUrl: './genre-page.css',
 })
-export class GenrePage {}
+export class GenrePage implements OnInit {
+  private genreService: GenreService = inject(GenreService);
+}
