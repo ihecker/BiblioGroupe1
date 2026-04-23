@@ -19,7 +19,7 @@ export class AvisPage {
 
   protected avis$!: Observable<Avis[]>;
   protected refresh$: Subject<void> = new Subject<void>();
-  protected livres$!: Observable<Livre[]>;
+  //protected livres$!: Observable<Livre[]>;
   protected update: boolean = false;
 
   protected formAvis!: FormGroup;
