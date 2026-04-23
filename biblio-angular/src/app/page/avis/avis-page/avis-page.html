@@ -35,7 +35,7 @@
     <label for="modifAvisCommentaire" class="form-label">Commentaire</label>
     <input type="text" class="form-control" id="modifAvisCommentaire" [(ngModel)]="updatedAvis.commentaire">
     <label for="modifAvisDate" class="form-label">Date</label>
-    <input disabled="true" type="date" class="form-control" id="modifAvisDate" [(ngModel)]="updatedAvis.date">
+    <input type="date" class="form-control" id="modifAvisDate" [(ngModel)]="updatedAvis.date">
     <label for="modifAvisLivreId" class="form-label">Livre (id)</label>
     <input type="number" class="form-control" id="modifAvisLivreId" [(ngModel)]="updatedAvis.livreId">
     <label for="modifAvisLivreTitre" class="form-label">Livre (titre)</label>
@@ -61,9 +61,18 @@
     <input type="text" class="form-control mb-2" id="commentaire" formControlName="commentaire"/>
     
     <label for="date" class="col-sm-2 col-form-label">Date</label>
-    <input [disabled]="true" type="date" class="form-control mb-2" id="date" formControlName="date"
-        [class.is-invalid]="formDateCtrl.invalid" />
-    <div *ngIf="formDateCtrl.hasError('required')" class="invalid-feedback">La date est obligatoire</div>
+    <input type="date" class="form-control mb-2" id="date" formControlName="date"/>
+    <!-- <div *ngIf="formDateCtrl.hasError('required')" class="invalid-feedback">La date est obligatoire</div> -->
+    
+     <label for="livreId" class="col-sm-2 col-form-label">Livre (id)</label>
+    <input type="number" class="form-control mb-2" id="livreId" formControlName="livreId"
+        [class.is-invalid]="formLivreIdCtrl.invalid" />
+    <div *ngIf="formLivreIdCtrl.hasError('required')" class="invalid-feedback">L'id du livre est obligatoire</div>
+    
+     <label for="livreTitre" class="col-sm-2 col-form-label">Livre (titre)</label>
+    <input type="text" class="form-control mb-2" id="livreTitre" formControlName="livreTitre"
+        [class.is-invalid]="formLivreTitreCtrl.invalid" />
+    <div *ngIf="formLivreTitreCtrl.hasError('required')" class="invalid-feedback">Le titre du livre est obligatoire</div>
     
     <div class="mt-3">
         <input [disabled]="formAvis.invalid" type="submit" class="btn btn-success" value="Ajouter" />

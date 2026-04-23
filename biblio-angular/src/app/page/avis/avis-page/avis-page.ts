@@ -19,19 +19,21 @@ export class AvisPage {
 
   protected avis$!: Observable<Avis[]>;
   protected refresh$: Subject<void> = new Subject<void>();
+  protected livres$!: Observable<Livre[]>;
   protected update: boolean = false;
 
   protected formAvis!: FormGroup;
   protected formNoteCtrl!: FormControl;
   protected formCommentaireCtrl!: FormControl;
-  protected formDateCtrl!: FormControl;
+  protected formDateCtrl: FormControl = new FormControl((new Date()).toISOString().substring(0,10));
   protected formLivreIdCtrl!: FormControl;
   protected formLivreTitreCtrl!: FormControl;
 
   protected updatedAvis: Avis = { id: 0, note: 0, commentaire: "", date: "", livreId: 0, livreTitre: "" };
 
   ngOnInit(): void {
-    // Créer validator note entre 1 et 10
+    this.titleService.setTitle("Avis");
+
     const noteValueValidator = (control: AbstractControl): ValidationErrors | null => {
       if (control.value < 0 || control.value > 10) {
         return { value: true }
@@ -40,7 +42,8 @@ export class AvisPage {
     };
 
     this.formNoteCtrl = this.formBuilder.control("", [Validators.required, noteValueValidator]);
-    this.formDateCtrl = this.formBuilder.control("", Validators.required);
+    //this.formDateCtrl = this.formBuilder.control("", Validators.required);
+    this.formCommentaireCtrl = this.formBuilder.control("", Validators.required);
     this.formLivreIdCtrl = this.formBuilder.control("", Validators.required);
     this.formLivreTitreCtrl = this.formBuilder.control("", Validators.required);
 
@@ -62,7 +65,7 @@ export class AvisPage {
     this.updatedAvis.id = a.id;
     this.updatedAvis.note = a.note;
     this.updatedAvis.commentaire = a.commentaire;
-    this.updatedAvis.date = a.date;
+    this.updatedAvis.date = this.formDateCtrl.value;
     this.updatedAvis.livreId = a.livreId;
     this.updatedAvis.livreTitre = a.livreTitre;
     this.update = true;

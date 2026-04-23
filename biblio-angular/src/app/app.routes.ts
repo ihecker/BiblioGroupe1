@@ -11,3 +11,4 @@ export const routes: Routes = [
   {path:"avis", component: AvisPage},
   {path:"", component:AuteurPage, pathMatch:"full"}
 ];
+ 
