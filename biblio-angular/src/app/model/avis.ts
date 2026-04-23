@@ -1,1 +1,8 @@
-export interface Avis {}
+export interface Avis {
+    id: number,
+    note: number,
+    commentaire: string,
+    date: string,
+    livreId: number,
+    livreTitre: string
+}
