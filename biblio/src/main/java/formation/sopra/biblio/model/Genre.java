@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,6 +21,7 @@ public class Genre {
 	@Column(name="libelle")
 	private String libelle;
 	
+	@OneToMany(mappedBy="genre")
 	private List<Livre> livres;
 	
 	

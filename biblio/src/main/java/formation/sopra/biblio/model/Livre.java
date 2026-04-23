@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -26,7 +25,8 @@ public class Livre {
     @ManyToOne
     @JoinColumn(name = "editeur_id", nullable = false)
     private Editeur editeur;
-    @OneToMany(mappedBy = "livre")
+    @ManyToOne
+    @JoinColumn(name = "collection_id", nullable = false)
     private Collection collection;
     @ManyToOne
     @JoinColumn(name = "genre_id", nullable = false)
