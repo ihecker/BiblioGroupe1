@@ -1,6 +1,5 @@
 package formation.sopra.biblio.dto.collection;
-
-import java.util.Collection;
+import formation.sopra.biblio.model.Collection;
 
 public class CollectionResponse {
     private String nom;

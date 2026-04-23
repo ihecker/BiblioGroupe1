@@ -1,3 +1,5 @@
+package formation.sopra.biblio.model;
+
 import java.util.List;
 
 import jakarta.persistence.Entity;
