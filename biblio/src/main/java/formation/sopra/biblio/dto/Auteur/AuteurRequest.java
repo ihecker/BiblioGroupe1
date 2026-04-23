@@ -7,6 +7,8 @@ public class AuteurRequest {
     private String nom;
     private String prenom;
     private String nationalite;
+
+  
     
     public AuteurRequest() {
     }
@@ -15,6 +17,7 @@ public class AuteurRequest {
         this.nom = nom;
         this.prenom = prenom;
         this.nationalite = nationalite;
+      
     }
 
     public String getNom() {
@@ -42,11 +45,10 @@ public class AuteurRequest {
     }
 
     public static AuteurRequest convert(Auteur auteur) {
-        return new AuteurRequest(auteur.getNom(), auteur.getPrenom(), auteur.getNationalite()); 
+        return new AuteurRequest(auteur.getNom(), auteur.getPrenom(), auteur.getNationalite());
     }
 
-
-
+    
     
     
 }

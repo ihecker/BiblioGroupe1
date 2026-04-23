@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import formation.sopra.biblio.dto.Auteur.AuteurRequest;
 import formation.sopra.biblio.dto.Auteur.AuteurResponse;
 import formation.sopra.biblio.model.Auteur;
-import formation.sopra.biblio.model.Livre;
 import formation.sopra.biblio.repository.IDAOAuteur;
 
 
@@ -25,6 +24,7 @@ import formation.sopra.biblio.repository.IDAOAuteur;
 public class AuteurController {
 
     private final IDAOAuteur daoAuteur;
+   
 
     public AuteurController(IDAOAuteur daoAuteur) {
         this.daoAuteur = daoAuteur;
@@ -55,10 +55,6 @@ public class AuteurController {
         a.setPrenom(request.getPrenom());
         a.setNationalite(request.getNationalite());
 
-        //set livre 
-        Livre l = daoLivre.findById(request.getLivreid()).orElseThrow( () -> new RuntimeException("Livre non trouvé avec l'id: " + request.getLivreid()));
-        a.setLivre(l);
-
         //save auteur
         Auteur tosave = daoAuteur.save(a);
 
@@ -74,10 +70,6 @@ public class AuteurController {
         a.setNom(request.getNom());
         a.setPrenom(request.getPrenom());
         a.setNationalite(request.getNationalite());
-
-        //set livre 
-        Livre l = daoLivre.findById(request.getLivreid()).orElseThrow( () -> new RuntimeException("Livre non trouvé avec l'id: " + request.getLivreid()));
-        a.setLivre(l);
 
         Auteur tosave = daoAuteur.save(a);
 
