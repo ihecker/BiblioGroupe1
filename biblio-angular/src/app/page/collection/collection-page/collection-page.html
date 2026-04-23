@@ -1,1 +1,33 @@
-<p>collection-page works!</p>
+<h1>Collection</h1>
+<form (submit)="addCollection()" [formGroup]="formCollection">
+
+    <div>
+        <input type="text" class="form-control" id="nom" [class.is-ivalid]="formNomCtrl.invalid"/>
+        <div *ngIf="formNomCtrl.hasError('required')" class="invalid-feedback">Le nom est obligatoire</div> 
+    </div> 
+
+    <div>
+        <input [disabled]="formCollection.invalid" type="submit" class="btn btn-success" value="Ajouter" />
+    </div>
+</form>
+
+<hr/>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let collection of collection$ | async">
+            <td>{{ collection.id }}</td>
+            <td>{{ collection.nom }}</td>
+            <td>
+                <button class="btn btn-danger" (click)="deleteCollection(collection)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody> 
+</table>
