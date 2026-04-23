@@ -1,5 +1,132 @@
 package formation.sopra.biblio.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Table;
+
+@Entity
+@Table(name = "livre")
 public class Livre {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "livre_id")
+    private Integer id;
+    private String titre;
+    private String resume;
+    private int annee;
+    @ManyToOne
+    @JoinColumn(name = "auteur_id", nullable = false)
+    private Auteur auteur;
+    @ManyToOne
+    @JoinColumn(name = "editeur_id", nullable = false)
+    private Editeur editeur;
+    @OneToMany(mappedBy = "livre")
+    private Collection collection;
+    @ManyToOne
+    @JoinColumn(name = "genre_id", nullable = false)
+    private Genre genre;
+
+    public Livre() {
+    }
+
+    public Livre(String titre, String resume, int annee, Auteur auteur, Editeur editeur, Collection collection,
+            Genre genre) {
+        this.titre = titre;
+        this.resume = resume;
+        this.annee = annee;
+        this.auteur = auteur;
+        this.editeur = editeur;
+        this.collection = collection;
+        this.genre = genre;
+    }
+
+    public Livre(Integer id, String titre, String resume, int annee, Auteur auteur, Editeur editeur,
+            Collection collection,
+            Genre genre) {
+        this.id = id;
+        this.titre = titre;
+        this.resume = resume;
+        this.annee = annee;
+        this.auteur = auteur;
+        this.editeur = editeur;
+        this.collection = collection;
+        this.genre = genre;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getTitre() {
+        return titre;
+    }
+
+    public void setTitre(String titre) {
+        this.titre = titre;
+    }
+
+    public String getResume() {
+        return resume;
+    }
+
+    public void setResume(String resume) {
+        this.resume = resume;
+    }
+
+    public int getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(int annee) {
+        this.annee = annee;
+    }
+
+    public Auteur getAuteur() {
+        return auteur;
+    }
+
+    public void setAuteur(Auteur auteur) {
+        this.auteur = auteur;
+    }
+
+    public Editeur getEditeur() {
+        return editeur;
+    }
+
+    public void setEditeur(Editeur editeur) {
+        this.editeur = editeur;
+    }
+
+    public Collection getCollection() {
+        return collection;
+    }
+
+    public void setCollection(Collection collection) {
+        this.collection = collection;
+    }
+
+    public Genre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(Genre genre) {
+        this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "Livre [id=" + id + ", titre=" + titre + ", resume=" + resume + ", annee=" + annee + ", auteur=" + auteur
+                + ", editeur=" + editeur + ", collection=" + collection + ", genre=" + genre + "]";
+    }
 
 }
