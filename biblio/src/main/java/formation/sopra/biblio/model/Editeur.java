@@ -2,6 +2,8 @@ package formation.sopra.biblio.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
+
 @Entity
 @Table(name="editeur")
 public class Editeur {
@@ -16,6 +18,9 @@ public class Editeur {
 
     @Column(nullable=false)
     private String pays;
+
+    @OneToMany(mappedBy = "editeur")
+    private List<Livre> livres;
 
     public Editeur() {}
     public Editeur(Integer id, String nom, String pays) {
@@ -50,6 +55,14 @@ public class Editeur {
 
     public void setPays(String pays) {
         this.pays = pays;
+    }
+
+    public List<Livre> getLivres() {
+        return livres;
+    }
+
+    public void setLivres(List<Livre> livres) {
+        this.livres = livres;
     }
 
     @Override
