@@ -2,6 +2,7 @@ package formation.sopra.biblio.controller;
 
 import formation.sopra.biblio.dto.editeur.EditeurRequest;
 import formation.sopra.biblio.dto.editeur.EditeurResponse;
+import formation.sopra.biblio.dto.editeur.EditeurWithLivresResponse;
 import formation.sopra.biblio.exception.EditeurNotFoundException;
 import formation.sopra.biblio.model.Editeur;
 import formation.sopra.biblio.repository.IDAOEditeur;
@@ -32,6 +33,16 @@ public class EditeurController {
         return daoEditeur
                 .findById(id)
                 .map(EditeurResponse::convert)
+                .orElseThrow(
+                        ()->new EditeurNotFoundException("Editeur with id:"+id+"does not exist")
+                );
+    }
+
+    @GetMapping("/livres/{id}")
+    public EditeurWithLivresResponse findByIdWithLivres(@PathVariable int id) {
+        return daoEditeur
+                .findByIdWithLivres(id)
+                .map(EditeurWithLivresResponse::convert)
                 .orElseThrow(
                         ()->new EditeurNotFoundException("Editeur with id:"+id+"does not exist")
                 );
