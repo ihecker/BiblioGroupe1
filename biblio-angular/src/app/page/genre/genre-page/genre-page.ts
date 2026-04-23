@@ -7,6 +7,9 @@ import { GenreService } from '../../../service/genre/genre-service';
   templateUrl: './genre-page.html',
   styleUrl: './genre-page.css',
 })
-export class GenrePage  {
+export class GenrePage implements OnInit {
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
   private genreService: GenreService = inject(GenreService);
 }

@@ -1,1 +1,40 @@
-<p>editeur-page works!</p>
+<div>
+  <h3> CRUD EDITEURS</h3>
+  <table>
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Nom</th>
+      <th>Pays</th>
+      <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let editeur of editeurs$ | async">
+      <td>{{editeur.id}}</td>
+      <td>{{editeur.nom}}</td>
+      <td>{{editeur.pays}}</td>
+      <td>Bouttons</td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+@if (idModif == null) {
+  <div>
+    <h4>FORMULAIRE D'AJOUT</h4>
+    <form (submit)="addEditeur()" [formGroup]="formEditeur">
+      <div>
+      <label>NOM</label>
+        <input type="text" formControlName="nom">
+
+      </div>
+      <div>
+      <label>PAYS</label>
+        <input type="text" formControlName="pays">
+      </div>
+      <input [disabled]="formEditeur.invalid" type="submit" value="AJOUTER"/>
+    </form>
+  </div>
+} @else {
+
+}

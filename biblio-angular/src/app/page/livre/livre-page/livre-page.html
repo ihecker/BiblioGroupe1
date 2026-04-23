@@ -1,0 +1,91 @@
+<h1>Gestion des livres</h1>
+
+<form (submit)="addLivre()" [formGroup]="formLivre">
+    <div class="mb-3 row">
+        <label for="titre" class="col-sm-2 col-form-label">Titre</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="titre" formControlName="titre" />
+        </div>
+        <!-- <div *ngIf="formTitreCtrl?.hasError('required')">Le titre est obligatoire</div> -->
+    </div>
+    <div class="mb-3 row">
+        <label for="resume" class="col-sm-2 col-form-label">Résumé</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="resume" formControlName="resume" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="annee" class="col-sm-2 col-form-label">Année</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="annee" formControlName="annee" />
+        </div>
+    </div>
+    
+    <div class="mb-3 row">
+        <label for="idAuteur" class="col-sm-2 col-form-label">Id Auteur</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="id" formControlName="id" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="idEditeur" class="col-sm-2 col-form-label">Id Editeur</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="id" formControlName="id" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="idCollection" class="col-sm-2 col-form-label">Id Collection</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="id" formControlName="id" />
+        </div>
+    </div>
+    <div class="mb-3 row">
+        <label for="idGenre" class="col-sm-2 col-form-label">Id Genre</label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="id" formControlName="id" />
+        </div>
+    </div>
+
+
+    <div>
+        <input [disabled]="formLivre.invalid" type="submit" class="btn btn-success" value="Ajouter" />
+    </div>
+</form>
+
+<hr />
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Résumé</th>
+            <th>Année</th>
+            <th>Id Auteur</th>
+            <th>Id Editeur</th>
+            <th>Id Collection</th>
+            <th>Id Genre</th>
+            <th>Modification</th>
+            <th>Supression</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let livre of livres$ | async">
+            <td>{{ livre.id }}</td>
+            <td>{{ livre.titre }}</td>
+            <td>{{ livre.resume }}</td>
+            <td>{{ livre.annee }}</td>
+            <td>{{ livre.idAuteur }}</td>
+            <td>{{ livre.idEditeur }}</td>
+            <td>{{ livre.idCollection }}</td>
+            <td>{{ livre.idGenre }}</td>
+            <td>
+                <button class="btn btn-warning" (click)="updateLivre(livre)">Modifier</button>
+            </td>
+            <td>
+                <button class="btn btn-danger" (click)="deleteLivre(livre)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
