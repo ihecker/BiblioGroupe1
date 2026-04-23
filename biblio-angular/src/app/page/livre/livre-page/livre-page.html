@@ -1,60 +1,57 @@
-<h1>Gestion des livres</h1>
+<div class="col-md-10 col-lg-10 mx-auto">
+    <h1 class="shadow-sm mx-auto">Gestion des livres</h1>
+<hr />
 
-<form (submit)="addLivre()" [formGroup]="formLivre">
-    <div class="mb-3 row">
-        <label for="titre" class="col-sm-2 col-form-label">Titre</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="titre" formControlName="titre" />
-        </div>
-        <!-- <div *ngIf="formTitreCtrl?.hasError('required')">Le titre est obligatoire</div> -->
-    </div>
-    <div class="mb-3 row">
-        <label for="resume" class="col-sm-2 col-form-label">Résumé</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="resume" formControlName="resume" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="annee" class="col-sm-2 col-form-label">Année</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="annee" formControlName="annee" />
-        </div>
-    </div>
-    
-    <div class="mb-3 row">
-        <label for="idAuteur" class="col-sm-2 col-form-label">Id Auteur</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="id" formControlName="id" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="idEditeur" class="col-sm-2 col-form-label">Id Editeur</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="id" formControlName="id" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="idCollection" class="col-sm-2 col-form-label">Id Collection</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="id" formControlName="id" />
-        </div>
-    </div>
-    <div class="mb-3 row">
-        <label for="idGenre" class="col-sm-2 col-form-label">Id Genre</label>
-        <div class="col-sm-10">
-            <input type="text" class="form-control" id="id" formControlName="id" />
-        </div>
-    </div>
+<form class="table-striped shadow-sm"(submit)="addLivre()" [formGroup]="formLivre">
+ <div class="row g-3">
+  <div class="col">
+    <label class="form-label">Titre</label>
+    <input type="text" class="form-control" formControlName="titre" />
+  </div>
+  <div class="col">
+    <label class="form-label">Résumé</label>
+    <textarea class="form-control" formControlName="resume" rows="2"></textarea>
+  </div>
+  <div class="col">
+    <label class="form-label">Année</label>
+    <input type="number" class="form-control" formControlName="annee" />
+  </div>
+</div>
+<div class="row g-3 mt-1">
+  <div class="col">
+    <label class="form-label">Id Auteur</label>
+    <input type="number" class="form-control" formControlName="idAuteur" />
+  </div>
+  <div class="col">
+    <label class="form-label">Id Editeur</label>
+    <input type="number" class="form-control" formControlName="idEditeur" />
+  </div>
+  <div class="col">
+    <label class="form-label">Id Collection</label>
+    <input type="number" class="form-control" formControlName="idCollection" />
+  </div>
+  <div class="col">
+    <label class="form-label">Id Genre</label>
+    <input type="number" class="form-control" formControlName="idGenre" />
+  </div>
+</div>
 
 
+<br />
     <div>
         <input [disabled]="formLivre.invalid" type="submit" class="btn btn-success" value="Ajouter" />
+        <span style="color: red;"*ngIf="formIdAuteurCtrl.invalid || formIdEditeurCtrl.invalid || formIdCollectionCtrl.invalid || formIdGenreCtrl.invalid" class="mt-0">
+  L'identifiant doit être positif...
+</span>
+<span style="color: red;"*ngIf="formAnneeCtrl.invalid" class="mt-0">
+  L'année doit être positive...
+</span>
     </div>
 </form>
 
 <hr />
 
-<table class="table table-striped">
+<table class="table table-hover table-striped table-sm table-bordered shadow-sm">
     <thead>
         <tr>
             <th>ID</th>
@@ -74,7 +71,7 @@
         <tr *ngFor="let livre of livres$ | async">
             <td>{{ livre.id }}</td>
             <td>{{ livre.titre }}</td>
-            <td>{{ livre.resume }}</td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{ livre.resume }}</td>
             <td>{{ livre.annee }}</td>
             <td>{{ livre.idAuteur }}</td>
             <td>{{ livre.idEditeur }}</td>
@@ -89,3 +86,4 @@
         </tr>
     </tbody>
 </table>
+</div>
