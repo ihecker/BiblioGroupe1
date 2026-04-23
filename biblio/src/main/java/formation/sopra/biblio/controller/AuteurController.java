@@ -61,7 +61,7 @@ public class AuteurController {
         return AuteurResponse.convert(tosave);
     }
 
-    @PostMapping("path")
+    @PostMapping
     public AuteurResponse ajouterAuteur(@RequestBody AuteurRequest request) {
         return AuteurResponse
                 .convert(daoAuteur

@@ -18,6 +18,9 @@ import { CommonModule } from '@angular/common';
   styleUrl: './genre-page.css',
 })
 export class GenrePage implements OnInit {
+  ngOnInit(): void {
+    throw new Error('Method not implemented.');
+  }
   private genreService: GenreService = inject(GenreService);
   private formBuilder: FormBuilder = inject(FormBuilder);
   protected genres$!: Observable<Genre[]>;
