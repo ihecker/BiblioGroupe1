@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 import formation.sopra.biblio.dto.genre.request.GenreRequestDTO;
 import formation.sopra.biblio.dto.genre.response.GenreResponseDTO;
 import formation.sopra.biblio.dto.genre.response.GenreWithLivreResponseDTO;
+import formation.sopra.biblio.exception.GenreNotFoundException;
 import formation.sopra.biblio.model.Genre;
 import formation.sopra.biblio.repository.IDAOGenre;
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/genre")
-public class GenreController {
+public class GenreController  {
 	
 	private final IDAOGenre daoGenre;
 
@@ -43,13 +43,13 @@ public class GenreController {
         return GenreResponseDTO.convert(daoGenre.findById(id).orElse(null));
     }
     
-    @GetMapping
+    @GetMapping("/livres/{id}")
     public GenreWithLivreResponseDTO findByIdWithLivres(@PathVariable int id) {
         return daoGenre
                 .GenreWithLivre(id)
                 .map(GenreWithLivreResponseDTO::convert)
                 .orElseThrow(
-                        ()->new GenreNotFoundException("Le genre avec l'id :"+id+"n'existe pas")
+                        ()->new GenreNotFoundException(id)
                 );
     }
 
