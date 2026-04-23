@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuteurService {
 
-  private apiUrl = 'http://localhost:8080/api/auteur';
+  private apiUrl = '/auteur';
 
   constructor(private http: HttpClient) {}
 
