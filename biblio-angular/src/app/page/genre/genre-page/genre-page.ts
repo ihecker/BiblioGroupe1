@@ -44,6 +44,12 @@ export class GenrePage implements OnInit {
   }
 
   public addGenre() {
+    const genre: Genre = {
+      id: 0,
+      libelle: this.formLibelleCtrl.value,
+    };
+    genre.libelle = this.formLibelleCtrl.value;
+
     this.genreService.insert(genre).subscribe(() => this.reload());
   }
 
