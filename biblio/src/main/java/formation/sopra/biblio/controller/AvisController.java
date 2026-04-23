@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import formation.sopra.biblio.dto.avis.AvisRequest;
 import formation.sopra.biblio.dto.avis.AvisResponse;
+import formation.sopra.biblio.exception.AvisNotFoundException;
 import formation.sopra.biblio.model.Avis;
 import formation.sopra.biblio.repository.IDAOAvis;
 

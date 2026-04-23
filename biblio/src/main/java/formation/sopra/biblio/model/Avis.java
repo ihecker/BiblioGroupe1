@@ -19,14 +19,18 @@ public class Avis {
 	@Column(name="avis_id")
     private Integer id;
 
+    @Column(nullable = false)
     private Integer note;
 
+    @Column(length=500)
     private String commentaire;
 
+    @Column(nullable = false)
     private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name="livre_id")
+    @Column(nullable = false)
     private Livre livre;
     
     public Avis(Integer id, int note, String commentaire, LocalDate date, Livre livre) {
