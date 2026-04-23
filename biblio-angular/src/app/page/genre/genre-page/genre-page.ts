@@ -18,9 +18,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './genre-page.css',
 })
 export class GenrePage implements OnInit {
-  ngOnInit(): void {
-    throw new Error('Method not implemented.');
-  }
   private genreService: GenreService = inject(GenreService);
   private formBuilder: FormBuilder = inject(FormBuilder);
   protected genres$!: Observable<Genre[]>;
@@ -46,13 +43,8 @@ export class GenrePage implements OnInit {
     this.refresh$.next();
   }
 
-  public findAll() {
-    const genre: Genre = {
-      id: 0,
-      libelle: this.formLibelleCtrl.value,
-    };
-
-    this.genreService.findAll().subscribe(() => this.reload());
+  public addGenre() {
+    this.genreService.insert(genre).subscribe(() => this.reload());
   }
 
   public deleteGenre(genre: Genre) {
