@@ -44,8 +44,8 @@ public class AuteurRequest {
         this.nationalite = nationalite;
     }
 
-    public static AuteurRequest convert(Auteur auteur) {
-        return new AuteurRequest(auteur.getNom(), auteur.getPrenom(), auteur.getNationalite());
+    public static Auteur convert(AuteurRequest auteurRequest) {
+        return new Auteur(auteurRequest.getNom(), auteurRequest.getPrenom(), auteurRequest.getNationalite());
     }
 
     

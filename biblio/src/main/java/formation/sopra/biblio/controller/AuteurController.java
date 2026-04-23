@@ -63,18 +63,9 @@ public class AuteurController {
 
     @PostMapping("path")
     public AuteurResponse ajouterAuteur(@RequestBody AuteurRequest request) {
-        //Créer un new auteur 
-        Auteur a = new Auteur();
-
-        //set valeur a partir de request
-        a.setNom(request.getNom());
-        a.setPrenom(request.getPrenom());
-        a.setNationalite(request.getNationalite());
-
-        Auteur tosave = daoAuteur.save(a);
-
-
-        return AuteurResponse.convert(tosave);
+        return AuteurResponse
+                .convert(daoAuteur
+                            .save(AuteurRequest.convert(request)));
     }
 
     @DeleteMapping("/{id}")
