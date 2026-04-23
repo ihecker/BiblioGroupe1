@@ -27,83 +27,101 @@ import jakarta.validation.Valid;
 @RequestMapping("/api/livres")
 public class LivreController {
 
-    private final IDAOLivre daoLivre;
-    private final IDAOAuteur daoAuteur;
-    private final IDAOEditeur daoEditeur;
-    private final IDAOCollection daoCollection;
-    private final IDAOGenre daoGenre;
+        private final IDAOLivre daoLivre;
+        private final IDAOAuteur daoAuteur;
+        private final IDAOEditeur daoEditeur;
+        private final IDAOCollection daoCollection;
+        private final IDAOGenre daoGenre;
 
-    public LivreController(IDAOLivre daoLivre, IDAOAuteur daoAuteur, IDAOEditeur daoEditeur,
-        IDAOCollection daoCollection,
-        IDAOGenre daoGenre) {
-        this.daoLivre = daoLivre;
-        this.daoAuteur = daoAuteur;
-        this.daoEditeur = daoEditeur;
-        this.daoCollection = daoCollection;
-        this.daoGenre = daoGenre;
+        public LivreController(IDAOLivre daoLivre, IDAOAuteur daoAuteur, IDAOEditeur daoEditeur,
+                        IDAOCollection daoCollection,
+                        IDAOGenre daoGenre) {
+                this.daoLivre = daoLivre;
+                this.daoAuteur = daoAuteur;
+                this.daoEditeur = daoEditeur;
+                this.daoCollection = daoCollection;
+                this.daoGenre = daoGenre;
 
-    }
+        }
 
-    @GetMapping
-    public List<LivreResponse> getAll() {
-        return daoLivre.findAll()
-                .stream()
-                .map(LivreResponse::convert)
-                .toList();
-    }
+        @GetMapping
+        public List<LivreResponse> getAll() {
+                return daoLivre.findAll()
+                                .stream()
+                                .map(LivreResponse::convert)
+                                .toList();
+        }
 
-    @GetMapping("/{id}")
-    public LivreResponse getLivreById(@PathVariable int id) {
-        return LivreResponse.convert(daoLivre.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Livre introuvable")));
-    }
+        @GetMapping("/{id}")
+        public LivreResponse getLivreById(@PathVariable int id) {
+                return LivreResponse.convert(daoLivre.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Livre introuvable")));
+        }
 
-    @PostMapping
-    public LivreResponse insert(@Valid @RequestBody LivreRequest livreRequest) {
-        Livre l = new Livre();
+        @PostMapping
+        public LivreResponse insert(@Valid @RequestBody LivreRequest livreRequest) {
+                Livre l = new Livre();
 
-        l.setTitre(livreRequest.getTitre());
-        l.setResume(livreRequest.getResume());
-        l.setAnnee(livreRequest.getAnnee());
-        l.setAuteur(daoAuteur.findById(livreRequest.getIdAuteur())
-                .orElseThrow(() -> new EntityNotFoundException("Auteur introuvable")));
-        l.setEditeur(daoEditeur.findById(livreRequest.getIdEditeur())
-                .orElseThrow(() -> new EntityNotFoundException("Editeur introuvable")));
-        l.setCollection(daoCollection.findById(livreRequest.getIdCollection())
-                .orElseThrow(() -> new EntityNotFoundException("Collection introuvable")));
-        l.setGenre(daoGenre.findById(livreRequest.getIdGenre())
-                .orElseThrow(() -> new EntityNotFoundException("Genre introuvable")));
+                l.setTitre(livreRequest.getTitre());
+                l.setResume(livreRequest.getResume());
+                l.setAnnee(livreRequest.getAnnee());
+                l.setAuteur(livreRequest.getIdAuteur() != null
+                                ? daoAuteur.findById(livreRequest.getIdAuteur())
+                                                .orElseThrow(() -> new EntityNotFoundException("Auteur introuvable"))
+                                : null);
+                l.setEditeur(livreRequest.getIdEditeur() != null
+                                ? daoEditeur.findById(livreRequest.getIdEditeur())
+                                                .orElseThrow(() -> new EntityNotFoundException("Editeur introuvable"))
+                                : null);
+                l.setCollection(livreRequest.getIdCollection() != null
+                                ? daoCollection.findById(livreRequest.getIdCollection())
+                                                .orElseThrow(() -> new EntityNotFoundException(
+                                                                "Collection introuvable"))
+                                : null);
+                l.setGenre(livreRequest.getIdGenre() != null
+                                ? daoGenre.findById(livreRequest.getIdGenre())
+                                                .orElseThrow(() -> new EntityNotFoundException("Genre introuvable"))
+                                : null);
 
-        return LivreResponse.convert(daoLivre.save(l));
-    }
+                return LivreResponse.convert(daoLivre.save(l));
+        }
 
-    @PutMapping("/{id}")
-    public LivreResponse update(@PathVariable int id, @Valid @RequestBody LivreRequest livreRequest) {
-        Livre l = daoLivre.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Livre introuvable"));
+        @PutMapping("/{id}")
+        public LivreResponse update(@PathVariable int id, @Valid @RequestBody LivreRequest livreRequest) {
+                Livre l = daoLivre.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Livre introuvable"));
 
-        l.setTitre(livreRequest.getTitre());
-        l.setResume(livreRequest.getResume());
-        l.setAnnee(livreRequest.getAnnee());
-        l.setAuteur(daoAuteur.findById(livreRequest.getIdAuteur())
-                .orElseThrow(() -> new EntityNotFoundException("Auteur introuvable")));
-        l.setEditeur(daoEditeur.findById(livreRequest.getIdEditeur())
-                .orElseThrow(() -> new EntityNotFoundException("Editeur introuvable")));
-        l.setCollection(daoCollection.findById(livreRequest.getIdCollection())
-                .orElseThrow(() -> new EntityNotFoundException("Collection introuvable")));
-        l.setGenre(daoGenre.findById(livreRequest.getIdGenre())
-                .orElseThrow(() -> new EntityNotFoundException("Genre introuvable")));
+                l.setTitre(livreRequest.getTitre());
+                l.setResume(livreRequest.getResume());
+                l.setAnnee(livreRequest.getAnnee());
+                l.setAuteur(livreRequest.getIdAuteur() != null
+                                ? daoAuteur.findById(livreRequest.getIdAuteur())
+                                                .orElseThrow(() -> new EntityNotFoundException("Auteur introuvable"))
+                                : null);
+                l.setEditeur(livreRequest.getIdEditeur() != null
+                                ? daoEditeur.findById(livreRequest.getIdEditeur())
+                                                .orElseThrow(() -> new EntityNotFoundException("Editeur introuvable"))
+                                : null);
+                l.setCollection(livreRequest.getIdCollection() != null
+                                ? daoCollection.findById(livreRequest.getIdCollection())
+                                                .orElseThrow(() -> new EntityNotFoundException(
+                                                                "Collection introuvable"))
+                                : null);
+                l.setGenre(livreRequest.getIdGenre() != null
+                                ? daoGenre.findById(livreRequest.getIdGenre())
+                                                .orElseThrow(() -> new EntityNotFoundException("Genre introuvable"))
+                                : null);
 
-        return LivreResponse.convert(daoLivre.save(l));
-    }
+                return LivreResponse.convert(daoLivre.save(l));
+        }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable int id) {
-        Livre l = daoLivre.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Livre introuvable"));
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> delete(@PathVariable int id) {
+                Livre l = daoLivre.findById(id)
+                                .orElseThrow(() -> new EntityNotFoundException("Livre introuvable"));
 
-        daoLivre.delete(l);
-        return ResponseEntity.noContent().build();
-    }
+                daoLivre.delete(l);
+                return ResponseEntity.noContent().build();
+        }
 
 }

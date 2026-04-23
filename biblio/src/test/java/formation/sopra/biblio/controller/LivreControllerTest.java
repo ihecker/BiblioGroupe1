@@ -18,16 +18,16 @@ public class LivreControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @MockitoBean
-    private JpaUserDetailsService jpaUserDetailsService;
+    // @MockitoBean
+    // private JpaUserDetailsService jpaUserDetailsService;
 
-    @MockitoBean
-    private JwtUtils jwtUtils;
+    // @MockitoBean
+    // private JwtUtils jwtUtils;
 
     private static final Integer ID = 1;
     private static final String TITRE = "Un titre de livre intriguant";
     private static final String RESUME = "Un résumé intriguant de livre intriguant";
-    private static final int ANNEE = 2026;
+    private static final Integer ANNEE = 2026;
     private static final Integer ID_AUTEUR = 10;
     private static final Integer ID_EDITEUR = 20;
     private static final Integer ID_GENRE = 30;
