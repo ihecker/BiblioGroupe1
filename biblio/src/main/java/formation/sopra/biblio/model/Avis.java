@@ -22,7 +22,7 @@ public class Avis {
     private Integer note;
 
     private String commentaire;
-    
+
     private LocalDate date;
 
     @ManyToOne
@@ -85,6 +85,12 @@ public class Avis {
 
     public void setLivre(Livre livre) {
         this.livre = livre;
+    }
+
+    @Override
+    public String toString() {
+        return "Avis [id=" + id + ", note=" + note + ", commentaire=" + commentaire + ", date=" + date + ", livre="
+                + livre + "]";
     }
 
 }
