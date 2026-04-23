@@ -20,7 +20,7 @@ public class Avis {
     private Integer id;
 
     @Column(nullable = false)
-    private Integer note;
+    private int note;
 
     @Column(length=500)
     private String commentaire;
