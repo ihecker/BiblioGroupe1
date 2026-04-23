@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import {  FormBuilder, FormsModule,ReactiveFormsModule,Validators } from '@angular/forms';
+import {  FormBuilder, FormControl, FormGroup, FormsModule,ReactiveFormsModule,Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Auteur } from '../../../model/auteur';
-import { Observable } from 'rxjs';
+import { Observable, startWith, Subject, switchMap } from 'rxjs';
 import { AuteurService } from '../../../service/auteur-service';
 import { CommonModule } from '@angular/common';
 
@@ -13,25 +13,45 @@ import { CommonModule } from '@angular/common';
   styleUrl: './auteur-page.css',
 })
 export class AuteurPage {
-   
 
-
+  private auteurService = inject(AuteurService);
+  private fb = inject(FormBuilder);
+  
+  formBuilder: FormBuilder = inject(FormBuilder);
   auteurs$!: Observable<Auteur[]>;
-  newAuteur: Auteur = {nom: '', prenom: '', nationalite: ''};
+  //newAuteur: Auteur = {nom: '', prenom: '', nationalite: ''};
   router: Router = inject(Router);
 
-  constructor(private auteurService: AuteurService) {}
+  refresh$ = new Subject<void>();
+  formAuteur!: FormGroup;
+
+  //protected formNomCtrl!: FormControl;
+  //protected formPrenomCtrl!: FormControl;
+  //protected formNationaliteCtrl!: FormControl;
+  
+
+
 
   ngOnInit(): void {
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    this.loadAuteur();
+    
+    this.formAuteur = this.fb.group({
+      nom: ['', Validators.required],
+      prenom: ['', Validators.required],
+      nationalite: ['', Validators.required]
+    });
+
+    this.auteurs$ = this.refresh$.pipe(
+      startWith(void 0),
+      switchMap(() => this.auteurService.getAll())
+    );
   }
 
   reload() {
-    this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
-    this.router.navigate([ '/auteur' ]);
-    });
+    this.refresh$.next();
+
+    //this.router.navigateByUrl('/', { skipLocationChange: true }).then(() => {
+    //this.router.navigate([ '/auteur' ]);
+    //});
   }
 
   loadAuteur() {
@@ -39,7 +59,17 @@ export class AuteurPage {
   }
 
   addAuteur() {
-    this.auteurService.add(this.newAuteur).subscribe(()  => {this.reload()});
+
+  if (this.formAuteur.invalid) {
+    this.formAuteur.markAllAsTouched();
+    return;
+  }
+
+  this.auteurService.add(this.formAuteur.value)
+    .subscribe(() => {
+      this.reload();
+      this.formAuteur.reset();
+    });
   }
 
   deleteAuteur(id: number) {
