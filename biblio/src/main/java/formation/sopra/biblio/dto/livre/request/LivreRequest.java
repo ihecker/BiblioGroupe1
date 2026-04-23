@@ -2,6 +2,7 @@ package formation.sopra.biblio.dto.livre.request;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 
 public class LivreRequest {
     @NotNull
@@ -10,7 +11,7 @@ public class LivreRequest {
     @NotNull
     private String resume;
 
-    @NotNull
+    @Positive
     private int annee;
 
     @Min(value = 1, message = "Un ID ne peut être ni nul ni négatif")

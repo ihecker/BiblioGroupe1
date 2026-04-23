@@ -88,23 +88,25 @@ public class LivreResponse {
         this.idCollection = idCollection;
     }
 
-    public String getIdGenre() {
+    public Integer getIdGenre() {
         return idGenre;
     }
 
-    public void setIdGenre(String idGenre) {
+    public void setIdGenre(Integer idGenre) {
         this.idGenre = idGenre;
     }
 
     public static LivreResponse convert(Livre l) {
         LivreResponse response = new LivreResponse();
         response.setId(l.getId());
+        response.setTitre(l.getTitre());
         response.setResume(l.getResume());
         response.setAnnee(l.getAnnee());
         response.setIdAuteur(l.getAuteur().getId());
         response.setIdEditeur(l.getEditeur().getId());
         response.setIdCollection(l.getCollection().getId());
         response.setIdGenre(l.getGenre().getId());
+        return response;
 
     }
 
