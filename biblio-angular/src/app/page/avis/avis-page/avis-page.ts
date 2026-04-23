@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AvisService } from '../../../service/avis/avis-service';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { Avis } from '../../../model/avis';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-avis-page',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [FormsModule,CommonModule, ReactiveFormsModule],
   templateUrl: './avis-page.html',
   styleUrl: './avis-page.css',
 })
