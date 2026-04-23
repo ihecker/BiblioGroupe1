@@ -1,5 +1,17 @@
 package formation.sopra.biblio.model;
 
+import java.util.List;
+
+import jakarta.persistence.Table;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.Version;
+
 @Entity
 @Table(name = "auteur")
 public class Auteur {
@@ -12,7 +24,7 @@ public class Auteur {
 
     private String nom;
     private String prenom;
-    private String nationalité;
+    private String nationalite;
 
 
     // Mapping avec la classe Livre (1 auteur peut avoir plusieurs livres)
@@ -28,18 +40,18 @@ public class Auteur {
     }
 
 
-    public Auteur(String nom, String prenom, String nationalité) {
+    public Auteur(String nom, String prenom, String nationalite) {
         this.nom = nom;
         this.prenom = prenom;
-        this.nationalité = nationalité;
+        this.nationalite = nationalite;
     }
 
 
-    public Auteur(int id, String nom, String prenom, String nationalité) {
+    public Auteur(int id, String nom, String prenom, String nationalite) {
         this.id = id;
         this.nom = nom;
         this.prenom = prenom;
-        this.nationalité = nationalité;
+        this.nationalite = nationalite;
     }
 
 
@@ -73,13 +85,13 @@ public class Auteur {
     }
 
 
-    public String getNationalité() {
-        return nationalité;
+    public String getNationalite() {
+        return nationalite;
     }
 
 
-    public void setNationalité(String nationalité) {
-        this.nationalité = nationalité;
+    public void setNationalite(String nationalite) {
+        this.nationalite = nationalite;
     }
 
 
@@ -102,6 +114,15 @@ public class Auteur {
         this.version = version;
     }
 
+
+    @Override
+    public String toString() {
+        return "Auteur [id=" + id + ", nom=" + nom + ", prenom=" + prenom + ", nationalite=" + nationalite + ", livres="
+                + livres + "]";
+    }
+
+
+    
     
 
 
