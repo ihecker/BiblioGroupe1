@@ -1,5 +1,9 @@
 package formation.sopra.biblio.repository;
 
-public interface IDAOLivre {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import formation.sopra.biblio.model.Livre;
+
+public interface IDAOLivre extends JpaRepository<Livre, Integer> {
 
 }
