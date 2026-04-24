@@ -5,31 +5,28 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
 public class LivreRequest {
-    @NotNull
     private String titre;
-
-    @NotNull
     private String resume;
 
-    @Positive
-    private int annee;
+    @Positive(message = "L'année doit être positive")
+    private Integer annee;
 
-    @Min(value = 1, message = "Un ID ne peut être ni nul ni négatif")
+    @Positive(message = "L'identifiant doit être positif")
     private Integer idAuteur;
 
-    @Min(value = 1, message = "Un ID ne peut être ni nul ni négatif")
+    @Positive(message = "L'identifiant doit être positif")
     private Integer idEditeur;
 
-    @Min(value = 1, message = "Un ID ne peut être ni nul ni négatif")
+    @Positive(message = "L'identifiant doit être positif")
     private Integer idCollection;
 
-    @Min(value = 1, message = "Un ID ne peut être ni nul ni négatif")
+    @Positive(message = "L'identifiant doit être positif")
     private Integer idGenre;
 
     public LivreRequest() {
     }
 
-    public LivreRequest(String titre, String resume, int annee, Integer idAuteur, Integer idEditeur,
+    public LivreRequest(String titre, String resume, Integer annee, Integer idAuteur, Integer idEditeur,
             Integer idCollection,
             Integer idGenre) {
         this.titre = titre;
@@ -57,11 +54,11 @@ public class LivreRequest {
         this.resume = resume;
     }
 
-    public int getAnnee() {
+    public Integer getAnnee() {
         return annee;
     }
 
-    public void setAnnee(int annee) {
+    public void setAnnee(Integer annee) {
         this.annee = annee;
     }
 

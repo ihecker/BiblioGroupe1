@@ -1,1 +1,59 @@
-<p>editeur-page works!</p>
+<div class = "container">
+  <h3> CRUD EDITEURS</h3>
+  <table class = "table table-bordered table-hover table-light table-striped">
+    <thead class = "table-primary">
+    <tr>
+      <th class="text-center">ID</th>
+      <th class="text-center">Nom</th>
+      <th class="text-center">Pays</th>
+      <th class="text-center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let editeur of editeurs$ | async">
+      <td class="text-center">{{editeur.id}}</td>
+      <td class="text-center">{{editeur.nom}}</td>
+      <td class="text-center">{{editeur.pays}}</td>
+      <td class="text-center">
+        <button (click)="activateModification(editeur.id)" class="btn btn-warning">MODIFIER</button>
+        <button (click)="deleteEditeur(editeur.id)" class="btn btn-danger">DELETE</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+@if (idModif == null) {
+  <div>
+    <h4>FORMULAIRE D'AJOUT</h4>
+    <form (submit)="addEditeur()" [formGroup]="formEditeur">
+      <div>
+      <label>NOM</label>
+        <input type="text" formControlName="nom">
+
+      </div>
+      <div>
+      <label>PAYS</label>
+        <input type="text" formControlName="pays">
+      </div>
+      <input [disabled]="formEditeur.invalid" type="submit" value="AJOUTER"/>
+    </form>
+  </div>
+} @else {
+  <div>
+    <h4>FORMULAIRE DE MODIFICATION</h4>
+    <form (submit)="modifEditeur(idModif)" [formGroup]="formEditeur">
+      <div>
+        <p> ID : {{idModif}}</p>
+        <label>NOM</label>
+        <input type="text" formControlName="nom">
+      </div>
+      <div>
+        <label>PAYS</label>
+        <input type="text" formControlName="pays">
+      </div>
+      <input [disabled]="formEditeur.invalid" type="submit" value="MODIFIER">
+      <button (click)="deactivateModification()" value="ANNULER">ANNULER</button>
+    </form>
+  </div>
+
+}

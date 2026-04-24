@@ -1,0 +1,89 @@
+<div class="col-md-10 col-lg-10 mx-auto">
+    <h1 class="shadow-sm mx-auto">Gestion des livres</h1>
+<hr />
+
+<form class="table-striped shadow-sm"(submit)="addLivre()" [formGroup]="formLivre">
+ <div class="row g-3">
+  <div class="col">
+    <label class="form-label">Titre</label>
+    <input type="text" class="form-control" formControlName="titre" />
+  </div>
+  <div class="col">
+    <label class="form-label">Résumé</label>
+    <textarea class="form-control" formControlName="resume" rows="2"></textarea>
+  </div>
+  <div class="col">
+    <label class="form-label">Année</label>
+    <input type="number" class="form-control" formControlName="annee" />
+  </div>
+</div>
+<div class="row g-3 mt-1">
+  <div class="col">
+    <label class="form-label">Id Auteur</label>
+    <input type="number" class="form-control" formControlName="idAuteur" />
+  </div>
+  <div class="col">
+    <label class="form-label">Id Editeur</label>
+    <input type="number" class="form-control" formControlName="idEditeur" />
+  </div>
+  <div class="col">
+    <label class="form-label">Id Collection</label>
+    <input type="number" class="form-control" formControlName="idCollection" />
+  </div>
+  <div class="col">
+    <label class="form-label">Id Genre</label>
+    <input type="number" class="form-control" formControlName="idGenre" />
+  </div>
+</div>
+
+
+<br />
+    <div>
+        <input [disabled]="formLivre.invalid" type="submit" class="btn btn-success" value="Ajouter" />
+        <span style="color: red;"*ngIf="formIdAuteurCtrl.invalid || formIdEditeurCtrl.invalid || formIdCollectionCtrl.invalid || formIdGenreCtrl.invalid" class="mt-0">
+  L'identifiant doit être positif...
+</span>
+<span style="color: red;"*ngIf="formAnneeCtrl.invalid" class="mt-0">
+  L'année doit être positive...
+</span>
+    </div>
+</form>
+
+<hr />
+
+<table class="table table-hover table-striped table-sm table-bordered shadow-sm">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Titre</th>
+            <th>Résumé</th>
+            <th>Année</th>
+            <th>Id Auteur</th>
+            <th>Id Editeur</th>
+            <th>Id Collection</th>
+            <th>Id Genre</th>
+            <th>Modification</th>
+            <th>Supression</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let livre of livres$ | async">
+            <td>{{ livre.id }}</td>
+            <td>{{ livre.titre }}</td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{ livre.resume }}</td>
+            <td>{{ livre.annee }}</td>
+            <td>{{ livre.idAuteur }}</td>
+            <td>{{ livre.idEditeur }}</td>
+            <td>{{ livre.idCollection }}</td>
+            <td>{{ livre.idGenre }}</td>
+            <td>
+                <button class="btn btn-warning" (click)="updateLivre(livre)">Modifier</button>
+            </td>
+            <td>
+                <button class="btn btn-danger" (click)="deleteLivre(livre)">Supprimer</button>
+            </td>
+        </tr>
+    </tbody>
+</table>
+</div>

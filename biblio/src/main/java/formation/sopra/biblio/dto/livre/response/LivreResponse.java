@@ -7,7 +7,7 @@ public class LivreResponse {
     private Integer id;
     private String titre;
     private String resume;
-    private int annee;
+    private Integer annee;
 
     private Integer idAuteur;
 
@@ -20,7 +20,7 @@ public class LivreResponse {
     public LivreResponse() {
     }
 
-    public LivreResponse(Integer id, String titre, String resume, int annee, Integer idAuteur,
+    public LivreResponse(Integer id, String titre, String resume, Integer annee, Integer idAuteur,
             Integer idEditeur, Integer idCollection, Integer idGenre) {
         this.id = id;
         this.titre = titre;
@@ -56,11 +56,11 @@ public class LivreResponse {
         this.resume = resume;
     }
 
-    public int getAnnee() {
+    public Integer getAnnee() {
         return annee;
     }
 
-    public void setAnnee(int annee) {
+    public void setAnnee(Integer annee) {
         this.annee = annee;
     }
 
@@ -102,10 +102,10 @@ public class LivreResponse {
         response.setTitre(l.getTitre());
         response.setResume(l.getResume());
         response.setAnnee(l.getAnnee());
-        response.setIdAuteur(l.getAuteur().getId());
-        response.setIdEditeur(l.getEditeur().getId());
-        response.setIdCollection(l.getCollection().getId());
-        response.setIdGenre(l.getGenre().getId());
+        response.setIdAuteur(l.getAuteur() != null ? l.getAuteur().getId() : null);
+        response.setIdEditeur(l.getEditeur() != null ? l.getEditeur().getId() : null);
+        response.setIdCollection(l.getCollection() != null ? l.getCollection().getId() : null);
+        response.setIdGenre(l.getGenre() != null ? l.getGenre().getId() : null);
         return response;
 
     }

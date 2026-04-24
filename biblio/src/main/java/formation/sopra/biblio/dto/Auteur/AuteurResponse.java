@@ -43,7 +43,7 @@ public class AuteurResponse {
         this.prenom = prenom;
     }
 
-    public String getNationalité() {
+    public String getNationalite() {
         return nationalite;
     }
 
