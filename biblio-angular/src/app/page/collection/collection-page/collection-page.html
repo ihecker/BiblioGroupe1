@@ -2,7 +2,8 @@
 <form (submit)="addCollection()" [formGroup]="formCollection">
 
     <div>
-        <input type="text" class="form-control" id="nom" [class.is-ivalid]="formNomCtrl.invalid"/>
+         <!--<input type="text" class="form-control" id="nom" [class.is-ivalid]="formNomCtrl.invalid"/>--> 
+        <input type="text" formControlName="nom"/>
         <div *ngIf="formNomCtrl.hasError('required')" class="invalid-feedback">Le nom est obligatoire</div> 
     </div> 
 
