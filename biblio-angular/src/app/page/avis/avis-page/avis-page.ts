@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { AvisService } from '../../../service/avis/avis-service';
 import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
@@ -19,6 +19,7 @@ export class AvisPage {
   private avisService: AvisService = inject(AvisService);
   private livreService: LivreService = inject(LivreService);
   private formBuilder: FormBuilder = inject(FormBuilder);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   protected avis$!: Observable<Avis[]>;
   protected refresh$: Subject<void> = new Subject<void>();
@@ -31,7 +32,21 @@ export class AvisPage {
   protected formDateCtrl: FormControl = new FormControl((new Date()).toISOString().substring(0, 10));
   protected formLivreCtrl!: FormControl;
 
-  protected updatedAvis: Avis = { id: 0, note: 0, commentaire: "", date: "", livreId: 0, livreTitre: "" };
+  protected formUpdateIdCtrl: FormControl = new FormControl('');
+  protected formUpdateNoteCtrl: FormControl = this.formBuilder.control('', [Validators.required, Validators.min(0), Validators.max(10)]);
+  protected formUpdateCommentaireCtrl: FormControl = new FormControl('');
+  protected formUpdateDateCtrl: FormControl = new FormControl('');
+  protected formUpdateLivreCtrl: FormControl = this.formBuilder.control('', Validators.required);
+
+  protected formUpdateAvis: FormGroup = this.formBuilder.group({
+    id: this.formUpdateIdCtrl,
+    note: this.formUpdateNoteCtrl,
+    commentaire: this.formUpdateCommentaireCtrl,
+    date: this.formUpdateDateCtrl,
+    livre: this.formUpdateLivreCtrl
+  });
+
+  //protected updatedAvis: Avis = { id: 0, note: 0, commentaire: "", date: "", livreId: 0, livreTitre: "" };
 
   ngOnInit(): void {
     this.titleService.setTitle("Avis");
@@ -49,8 +64,6 @@ export class AvisPage {
     };
 
     this.formNoteCtrl = this.formBuilder.control("", [Validators.required, noteValueValidator]);
-    //this.formDateCtrl = this.formBuilder.control("", Validators.required);
-    //this.formCommentaireCtrl = this.formBuilder.control("", Validators.required);
     this.formLivreCtrl = this.formBuilder.control("", Validators.required);
 
     this.formAvis = this.formBuilder.group({
@@ -71,13 +84,20 @@ export class AvisPage {
   }
 
   public updatableAvis(a: Avis) {
-    this.updatedAvis.id = a.id;
-    this.updatedAvis.note = a.note;
-    this.updatedAvis.commentaire = a.commentaire;
-    this.updatedAvis.date = this.formDateCtrl.value;
-    this.updatedAvis.livreId = a.livreId;
-    this.updatedAvis.livreTitre = a.livreTitre;
-    this.update = true;
+    console.log(a);
+
+    this.livreService.findById(a.livreId).subscribe(livre => {
+      this.formUpdateAvis.setValue({
+        id: a.id,
+        note: a.note,
+        commentaire: a.commentaire,
+        date: a.date,
+        livre: livre
+      });
+
+      this.update = true;
+      this.cdr.detectChanges();
+    });
   }
 
   public addAvis() {
@@ -90,14 +110,22 @@ export class AvisPage {
       livreTitre: this.formLivreCtrl.value.titre
     };
 
-    console.log(avis);
-
     this.avisService.add(avis).subscribe(() => this.reload());
   }
 
   public updateAvis() {
     this.update = false;
-    this.avisService.update({ id: this.updatedAvis.id, note: this.updatedAvis.note, commentaire: this.updatedAvis.commentaire, date: this.updatedAvis.date, livreId: this.updatedAvis.livreId, livreTitre: this.updatedAvis.livreTitre }).subscribe(() => this.reload());
+
+    const avis: Avis = {
+      id: this.formUpdateIdCtrl.value,
+      note: this.formUpdateNoteCtrl.value,
+      commentaire: this.formUpdateCommentaireCtrl.value,
+      date: this.formUpdateDateCtrl.value,
+      livreId: this.formUpdateLivreCtrl.value.id,
+      livreTitre: this.formUpdateLivreCtrl.value.titre
+    };
+
+    this.avisService.update(avis).subscribe(() => this.reload());
   }
 
   public deleteAvis(id: number) {

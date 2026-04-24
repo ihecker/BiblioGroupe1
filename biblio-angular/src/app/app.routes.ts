@@ -5,6 +5,7 @@ import { EditeurPage } from './page/editeur/editeur-page/editeur-page';
 import { AvisPage } from './page/avis/avis-page/avis-page';
 import { LivrePage } from './page/livre/livre-page/livre-page';
 import { CollectionPage } from './page/collection/collection-page/collection-page';
+import { AvisPage } from './page/avis/avis-page/avis-page';
 
 export const routes: Routes = [
   {path:"livres", component: LivrePage},
