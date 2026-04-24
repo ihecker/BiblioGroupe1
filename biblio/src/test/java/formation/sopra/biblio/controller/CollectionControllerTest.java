@@ -3,6 +3,8 @@ package formation.sopra.biblio.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import java.util.Optional;
+
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,6 +14,8 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import formation.sopra.biblio.config.SecurityConfig;
 import formation.sopra.biblio.model.Collection;
@@ -31,6 +35,10 @@ public class CollectionControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
+    // pour convertir java et json
+    @Autowired
+    private ObjectMapper objectMapper;
+
      @MockitoBean
     private IDAOCollection daoCollection;
 
@@ -44,7 +52,7 @@ public class CollectionControllerTest {
                 .content("{}"))
                 .andExpect(MockMvcResultMatchers.status().isOk());  //verifie que la reponse est ok
     }
-/* 
+
      @Test
     @WithMockUser
     void shouldUpdateStatusOk() throws Exception {
@@ -56,7 +64,7 @@ public class CollectionControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
-    */
+    
     @Test
     @WithMockUser
     void shouldDeleteStatusOk() throws Exception {
