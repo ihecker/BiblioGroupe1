@@ -2,11 +2,11 @@ FROM node:lts-bullseye AS builder
 
 WORKDIR /app
 
-COPY package.json.
+COPY package.json .
 
 RUN npm install
 
-COPY ..
+COPY . .
 
 RUN ./node_modules/.bin/ng build
 
