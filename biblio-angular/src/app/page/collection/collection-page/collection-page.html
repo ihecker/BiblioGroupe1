@@ -49,10 +49,30 @@
 
                     <tbody>
                         <tr *ngFor="let collection of collection$ | async">
+
                             <td>{{ collection.id }}</td>
-                            <td>{{ collection.nom }}</td>
+
+                            <td style="max-width: 25px;">
+                                <ng-container *ngIf="collectionEnEdition.id === collection.id; else afficheNom">
+                                    <input type="text" class="form-control form-control-sm"
+                                        [(ngModel)]="collectionEnEdition.nom" />
+                                </ng-container>
+                                <ng-template #afficheNom>{{ collection.nom }}</ng-template>
+                            </td>
+
                             <td class="text-end">
-                                <button class="btn btn-danger" (click)="deleteCollection(collection)">Supprimer</button>
+                                <button *ngIf="collectionEnEdition?.id !== collection.id" class="btn btn-warning"
+                                    (click)="updateCollection(collection)">Modifier</button>
+                                <button *ngIf="collectionEnEdition?.id == collection.id" class="btn btn-success"
+                                    (click)="sauvegarder()">Sauvegarder</button>
+                            </td>
+                            <td>
+                                <button *ngIf="collectionEnEdition?.id !== collection.id" class="btn btn-danger"
+                                    (click)="deleteCollection(collection)">Supprimer</button>
+                                <button *ngIf="collectionEnEdition?.id == collection.id" class="btn btn-secondary"
+                                    (click)="annuler()">Annuler</button>
+
+
                             </td>
                         </tr>
                     </tbody>
