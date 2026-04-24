@@ -10,6 +10,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import formation.sopra.biblio.config.SecurityConfig;
 import formation.sopra.biblio.repository.IDAOCollection;
 
 @WebMvcTest(controllers = CollectionController.class)
