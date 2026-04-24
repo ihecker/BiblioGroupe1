@@ -11,10 +11,10 @@
                 <form (submit)="addAvis()" [formGroup]="formAvis">
                     <div class="row">
 
-                        <div class="col-md-1">
-                            <label for="note" class="form-label">Note</label>
+                        <div class="col-1">
+                            <label for="note" class="form-label">Note /10</label>
                             <input type="number" class="form-control" id="note" formControlName="note"
-                                [class.is-invalid]="formNoteCtrl.invalid" />
+                                [class.is-invalid]="formNoteCtrl.invalid && formNoteCtrl.touched" />
                             <div *ngIf="formNoteCtrl.hasError('required')" class="invalid-feedback">La note est
                                 obligatoire
                             </div>
@@ -25,20 +25,21 @@
                             </div>
                         </div>
 
-                        <div class="col-md-5">
+                        <div class="col-5">
                             <label for="commentaire" class="form-label">Commentaire</label>
                             <textarea class="form-control" id="commentaire" formControlName="commentaire"
                                 rows="2"></textarea>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-auto" style="width: 150px;">
                             <label for="date" class="form-label">Date</label>
-                            <input type="date" class="form-control" id="date" formControlName="date" />
+                            <input type="date" class="form-control" id="date" formControlName="date" readonly/>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col">
                             <label for="livre" class="form-label">Livre</label>
                             <select class="form-control" id="livre" formControlName="livre"
-                                [class.is-invalid]="formLivreCtrl.invalid" [compareWith]="compareById">
+                                [class.is-invalid]="formLivreCtrl.invalid && formLivreCtrl.touched"
+                                [compareWith]="compareById">
                                 <option *ngFor="let l of livres$ | async" [ngValue]="l">{{l.id}} - {{l.titre}}</option>
                             </select>
                             <div *ngIf="formLivreCtrl.hasError('required')" class="invalid-feedback">Le livre est
@@ -62,42 +63,45 @@
 
             <div class="card-body">
                 <form (submit)="updateAvis()" [formGroup]="formUpdateAvis">
-
-                    <div class="mb-3">
-                        <label for="updateNote" class="form-label">Note</label>
-                        <input type="number" class="form-control" id="updateNote" formControlName="note"
-                            [class.is-invalid]="formUpdateNoteCtrl.invalid" />
-                        <div *ngIf="formUpdateNoteCtrl.hasError('required')" class="invalid-feedback">La note est
-                            obligatoire</div>
-                        <div *ngIf="formUpdateNoteCtrl.hasError('min') || formUpdateNoteCtrl.hasError('max')"
-                            class="invalid-feedback">
-                            La note doit être comprise entre 0 et 10
+                    <div class="row">
+                        <div class="col-1">
+                            <label for="updateNote" class="form-label">Note /10</label>
+                            <input type="number" class="form-control" id="updateNote" formControlName="note"
+                                [class.is-invalid]="formUpdateNoteCtrl.invalid && formUpdateNoteCtrl.touched" />
+                            <div *ngIf="formUpdateNoteCtrl.hasError('required')" class="invalid-feedback">La note est
+                                obligatoire</div>
+                            <div *ngIf="formUpdateNoteCtrl.hasError('min') || formUpdateNoteCtrl.hasError('max')"
+                                class="invalid-feedback">
+                                La note doit être comprise entre 0 et 10
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="mb-3">
-                        <label for="updateCommentaire" class="form-label">Commentaire</label>
-                        <input type="text" class="form-control" id="updateCommentaire" formControlName="commentaire" />
-                    </div>
+                        <div class="col-5">
+                            <label for="updateCommentaire" class="form-label">Commentaire</label>
+                             <textarea class="form-control" id="updateCommentaire" formControlName="commentaire"
+                                rows="2"></textarea>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="updateDate" class="form-label">Date</label>
-                        <input type="date" class="form-control" id="updateDate" formControlName="date" />
-                    </div>
+                        <div class="col-auto" style="width: 150px;">
+                            <label for="updateDate" class="form-label">Date</label>
+                            <input type="date" class="form-control" id="updateDate" formControlName="date" readonly/>
+                        </div>
 
-                    <div class="mb-3">
-                        <label for="updateLivre" class="form-label">Livre</label>
-                        <select class="form-control" id="updateLivre" formControlName="livre"
-                            [class.is-invalid]="formUpdateLivreCtrl.invalid" [compareWith]="compareById">
-                            <option *ngFor="let l of livres$ | async" [ngValue]="l">{{l.id}} - {{l.titre}}</option>
-                        </select>
-                        <div *ngIf="formUpdateLivreCtrl.hasError('required')" class="invalid-feedback">Le livre est
-                            obligatoire
+                        <div class="col">
+                            <label for="updateLivre" class="form-label">Livre</label>
+                            <select class="form-control" id="updateLivre" formControlName="livre"
+                                [class.is-invalid]="formUpdateLivreCtrl.invalid && formUpdateLivreCtrl.touched"
+                                [compareWith]="compareById">
+                                <option *ngFor="let l of livres$ | async" [ngValue]="l">{{l.id}} - {{l.titre}}</option>
+                            </select>
+                            <div *ngIf="formUpdateLivreCtrl.hasError('required')" class="invalid-feedback">Le livre est
+                                obligatoire
+                            </div>
                         </div>
                     </div>
 
                     <button [disabled]="formUpdateAvis.invalid" type="submit"
-                        class="btn btn-success w-100">Valider</button>
+                        class="btn btn-success w-100 mt-2">Valider</button>
                 </form>
             </div>
         </div>
@@ -132,7 +136,8 @@
                             <td style="max-width: 300px; overflow: hidden; text-overflow: ellipsis;">
                                 {{a.commentaire}}</td>
                             <td>{{a.date}}</td>
-                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{a.livreTitre}}</td>
+                            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{a.livreTitre}}
+                            </td>
                             <td class="text-end"><button type="button" class="btn btn-warning mx-1"
                                     (click)="updatableAvis(a)">Modifier</button>
                                 <button type="button" class="btn btn-danger  mx-1"
