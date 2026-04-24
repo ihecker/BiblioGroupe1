@@ -5,7 +5,9 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
+@Service
 public class JpaUserDetailsService implements UserDetailsService {
 
     private final IDAOUtilisateur daoUtilisateur;
@@ -15,6 +17,7 @@ public class JpaUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
+
         return this.daoUtilisateur
                 .findByUsernameOptional(login)
                 .map(u -> User.builder()
@@ -24,5 +27,7 @@ public class JpaUserDetailsService implements UserDetailsService {
                 )
                 .orElseThrow(() -> new UsernameNotFoundException("L'utilisateur n'existe pas!"))
                 ;
+
+
     }
 }

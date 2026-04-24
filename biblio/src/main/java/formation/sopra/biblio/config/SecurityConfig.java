@@ -25,8 +25,9 @@ public class SecurityConfig {
         http.authorizeHttpRequests(authorization -> {
             // authorization.requestMatchers("/api/auth", "/api/inscription").permitAll();
             authorization.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
-            authorization.requestMatchers("/api/auth/register").permitAll();
+            //authorization.requestMatchers("/api/auth/**").permitAll();
             authorization.requestMatchers("/api/auth").permitAll();
+            //authorization.anyRequest().authenticated();
         });
 
         http.csrf(csrf -> csrf.ignoringRequestMatchers("/api/**"));

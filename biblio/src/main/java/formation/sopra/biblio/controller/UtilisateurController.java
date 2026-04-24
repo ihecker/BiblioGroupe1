@@ -7,6 +7,7 @@ import formation.sopra.biblio.model.Utilisateur;
 import formation.sopra.biblio.repository.IDAOUtilisateur;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -54,9 +55,9 @@ public class UtilisateurController {
 
 
         UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(request.getUsername(),request.getPassword());
+        Authentication authenticationResult = authenticationManager.authenticate(authentication);
 
-
-        return new TokenResponse(JwtUtils.generate(authenticationManager.authenticate(authentication)));
+        return new TokenResponse(JwtUtils.generate(authenticationResult));
     }
 
 
