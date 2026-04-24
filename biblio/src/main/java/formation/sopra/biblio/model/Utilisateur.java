@@ -20,28 +20,21 @@ public class Utilisateur {
     @Column(length = 100, nullable = false)
     protected String password;
 
-    @Column(length = 20)
-    protected String nom;
-
-    @Column(length = 20)
-    protected String prenom;
 
     public Utilisateur() {
     }
 
-    public Utilisateur(String login, String password, String nom, String prenom) {
+    public Utilisateur(String login, String password) {
         this.login = login;
         this.password = password;
-        this.nom = nom;
-        this.prenom = prenom;
+
     }
 
-    public Utilisateur(Integer id, String login, String password, String nom, String prenom) {
+    public Utilisateur(Integer id, String login, String password) {
         this.id = id;
         this.login = login;
         this.password = password;
-        this.nom = nom;
-        this.prenom = prenom;
+
     }
 
     public Integer getId() {
@@ -68,26 +61,10 @@ public class Utilisateur {
         this.password = password;
     }
 
-    public String getNom() {
-        return nom;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
-
-    public String getPrenom() {
-        return prenom;
-    }
-
-    public void setPrenom(String prenom) {
-        this.prenom = prenom;
-    }
 
     @Override
     public String toString() {
-        return "Utilisateur [id=" + id + ", login=" + login + ", password=" + password + ", nom=" + nom + ", prenom="
-                + prenom + "]";
+        return "Utilisateur [id=" + id + ", login=" + login + ", password=" + password +"]";
     }
 
 }
