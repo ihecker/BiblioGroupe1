@@ -1,7 +1,9 @@
 <div class="col-md-10 col-lg-10 mx-auto">
-    <h1 class="shadow-sm mx-auto">Gestion des livres</h1>
-<hr />
 
+  <div class="card shadow-sm">
+    <div style="background-color: #d86874;" class="card-header text-white">
+      <h5 class="mb-0">Ajouter un livre</h5>
+    </div>
 <form class="table-striped shadow-sm"(submit)="addLivre()" [formGroup]="formLivre">
  <div class="row g-3">
   <div class="col">
@@ -19,20 +21,32 @@
 </div>
 <div class="row g-3 mt-1">
   <div class="col">
-    <label class="form-label">Id Auteur</label>
-    <input type="number" class="form-control" formControlName="idAuteur" />
+    <label class="form-label">ID Auteur</label>
+        <select class="form-control" formControlName="idAuteur">
+      <option [ngValue]="null">--</option>
+            <option *ngFor="let a of auteurs$ | async" [ngValue]="a.id">{{a.id}} - {{a.nom}}</option>
+        </select>
   </div>
   <div class="col">
-    <label class="form-label">Id Editeur</label>
-    <input type="number" class="form-control" formControlName="idEditeur" />
+    <label class="form-label">ID Editeur</label>
+    <select class="form-control" formControlName="idEditeur">
+      <option [ngValue]="null">--</option>
+            <option *ngFor="let e of editeurs$ | async" [ngValue]="e.id">{{e.id}} - {{e.nom}}</option>
+        </select>
   </div>
   <div class="col">
-    <label class="form-label">Id Collection</label>
-    <input type="number" class="form-control" formControlName="idCollection" />
+    <label class="form-label">ID Collection</label>
+        <select class="form-control" formControlName="idCollection">
+          <option [ngValue]="null">--</option>
+            <option *ngFor="let c of collections$ | async" [ngValue]="c.id">{{c.id}} - {{c.nom}}</option>
+        </select>
   </div>
   <div class="col">
-    <label class="form-label">Id Genre</label>
-    <input type="number" class="form-control" formControlName="idGenre" />
+    <label class="form-label">ID Genre</label>
+    <select class="form-control" formControlName="idGenre">
+      <option [ngValue]="null">--</option>
+            <option *ngFor="let g of genres$ | async" [ngValue]="g.id">{{g.id}} - {{g.libelle}}</option>
+        </select>
   </div>
 </div>
 
@@ -50,7 +64,12 @@
 </form>
 
 <hr />
-
+    <div style="background-color: #d86874;" class="card-header text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Liste des livres</h5>
+      <span class="badge bg-light text-dark">
+        {{ (livres$ | async)?.length || 0 }} livres
+      </span>
+    </div>
 <table class="table table-hover table-striped table-sm table-bordered shadow-sm">
     <thead>
         <tr>
@@ -58,30 +77,79 @@
             <th>Titre</th>
             <th>Résumé</th>
             <th>Année</th>
-            <th>Id Auteur</th>
-            <th>Id Editeur</th>
-            <th>Id Collection</th>
-            <th>Id Genre</th>
-            <th>Modification</th>
-            <th>Supression</th>
+            <th>ID Auteur</th>
+            <th>ID Editeur</th>
+            <th>ID Collection</th>
+            <th>ID Genre</th>
+            <th></th>
+            <th></th>
         </tr>
     </thead>
 
     <tbody>
-        <tr *ngFor="let livre of livres$ | async">
-            <td>{{ livre.id }}</td>
-            <td>{{ livre.titre }}</td>
-            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis;">{{ livre.resume }}</td>
-            <td>{{ livre.annee }}</td>
-            <td>{{ livre.idAuteur }}</td>
-            <td>{{ livre.idEditeur }}</td>
-            <td>{{ livre.idCollection }}</td>
-            <td>{{ livre.idGenre }}</td>
-            <td>
-                <button class="btn btn-warning" (click)="updateLivre(livre)">Modifier</button>
+    <tr *ngFor="let livre of livres$ | async">
+        <td>{{ livre.id }}</td>
+        <td style="max-width: 75px; min-width: 50px;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheTitre">
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="livreEnEdition!.titre" />
+            </ng-container>
+            <ng-template #afficheTitre>{{ livre.titre }}</ng-template>
+        </td>
+        <td style="max-width: 200px; min-width: 200px; overflow: hidden; text-overflow: ellipsis;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheResume">
+                <input type="text" class="form-control form-control-sm" [(ngModel)]="livreEnEdition!.resume" />
+            </ng-container>
+            <ng-template #afficheResume>{{ livre.resume }}</ng-template>
+        </td>
+        <td style="max-width: 25px;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheAnnee">
+                <input type="number" class="form-control form-control-sm" [(ngModel)]="livreEnEdition!.annee" />
+            </ng-container>
+            <ng-template #afficheAnnee>{{ livre.annee }}</ng-template>
+        </td>
+        <td style="max-width: 25px;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheAuteur">
+                <select class="form-select form-select-sm" [(ngModel)]="livreEnEdition!.idAuteur">
+                    <option [ngValue]="null">--</option>
+                    <option *ngFor="let a of auteurs$ | async" [ngValue]="a.id">{{a.nom}}</option>
+                </select>
+            </ng-container>
+            <ng-template #afficheAuteur>{{ livre.idAuteur }}</ng-template>
+        </td>
+        <td style="max-width: 25px;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheEditeur">
+                <select class="form-select form-select-sm" [(ngModel)]="livreEnEdition!.idEditeur">
+                    <option [ngValue]="null">--</option>
+                    <option *ngFor="let e of editeurs$ | async" [ngValue]="e.id">{{e.nom}}</option>
+                </select>
+            </ng-container>
+            <ng-template #afficheEditeur>{{ livre.idEditeur }}</ng-template>
+        </td>
+        <td style="max-width: 25px;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheCollection">
+                <select class="form-select form-select-sm" [(ngModel)]="livreEnEdition!.idCollection">
+                    <option [ngValue]="null">--</option>
+                    <option *ngFor="let c of collections$ | async" [ngValue]="c.id">{{c.nom}}</option>
+                </select>
+            </ng-container>
+            <ng-template #afficheCollection>{{ livre.idCollection }}</ng-template>
+        </td>
+        <td style="max-width: 25px;">
+            <ng-container *ngIf="livreEnEdition?.id === livre.id; else afficheGenre">
+                <select class="form-select form-select-sm" [(ngModel)]="livreEnEdition!.idGenre">
+                    <option [ngValue]="null">--</option>
+                    <option *ngFor="let g of genres$ | async" [ngValue]="g.id">{{g.libelle}}</option>
+                </select>
+            </ng-container>
+            <ng-template #afficheGenre>{{ livre.idGenre }}</ng-template>
+        </td>
+            <td style="min-width: 100px;" class="text-center">
+                <button *ngIf="livreEnEdition?.id !== livre.id" class="btn btn-warning btn-sm" (click)="editer(livre)">Modifier</button>
+                <button *ngIf="livreEnEdition?.id === livre.id" class="btn btn-success btn-sm" (click)="sauvegarder()">Sauvegarder</button>
             </td>
-            <td>
-                <button class="btn btn-danger" (click)="deleteLivre(livre)">Supprimer</button>
+            <td style="min-width: 100px;" class="text-center">
+              <button *ngIf="livreEnEdition?.id !== livre.id" class="btn btn-danger btn-sm" (click)="deleteLivre(livre)">Supprimer</button>
+              <button *ngIf="livreEnEdition?.id === livre.id" class="btn btn-secondary btn-sm" (click)="annuler()">Annuler</button>
             </td>
         </tr>
     </tbody>
