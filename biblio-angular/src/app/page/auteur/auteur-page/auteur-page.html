@@ -1,0 +1,120 @@
+
+
+
+<div class="container mt-4">
+
+  <div class="card shadow-sm">
+    <div class="card-header bg-primary text-white">
+      <h5 class="mb-0">Ajouter un auteur</h5>
+    </div>
+
+    <div class="card-body">
+
+      <form [formGroup]="formAuteur" (ngSubmit)="addAuteur()">
+
+        <div class="mb-3">
+          <label class="form-label">Nom</label>
+          <input class="form-control"
+                 formControlName="nom"
+                 [class.is-invalid]="formAuteur.get('nom')?.invalid && formAuteur.get('nom')?.touched">
+
+          <div class="invalid-feedback">
+            Le nom est obligatoire
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Prénom</label>
+          <input class="form-control"
+                 formControlName="prenom"
+                 [class.is-invalid]="formAuteur.get('prenom')?.invalid && formAuteur.get('prenom')?.touched">
+
+          <div class="invalid-feedback">
+            Le prénom est obligatoire
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Nationalité</label>
+          <input class="form-control"
+                 formControlName="nationalite"
+                 [class.is-invalid]="formAuteur.get('nationalite')?.invalid && formAuteur.get('nationalite')?.touched">
+
+          <div class="invalid-feedback">
+            La nationalité est obligatoire
+          </div>
+        </div>
+
+        <button class="btn btn-success w-100" type="submit">
+          Ajouter
+        </button>
+
+      </form>
+
+    </div>
+  </div>
+
+<div class="container mt-4">
+
+  <div class="card shadow border-0">
+
+    <!-- HEADER -->
+    <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Liste des auteurs</h5>
+      <span class="badge bg-light text-dark">
+        {{ (auteurs$ | async)?.length || 0 }} auteurs
+      </span>
+    </div>
+
+    <!-- TABLE -->
+    <div class="table-responsive">
+
+      <table class="table table-hover align-middle mb-0">
+
+        <thead class="table-light">
+          <tr>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Nationalité</th>
+            <th class="text-end">Actions</th>
+          </tr>
+        </thead>
+
+        <tbody>
+
+          <tr *ngFor="let auteur of auteurs$ | async">
+
+            <td class="fw-semibold">
+              {{ auteur.nom }}
+            </td>
+
+            <td>
+              {{ auteur.prenom }}
+            </td>
+
+            <td>
+              <span class="badge bg-info text-dark px-3 py-2">
+                {{ auteur.nationalite }}
+              </span>
+            </td>
+
+            <td class="text-end">
+
+              <button class="btn btn-outline-danger btn-sm"
+                      (click)="deleteAuteur(auteur.id!)">
+                Supprimer
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

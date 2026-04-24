@@ -1,15 +1,5 @@
 package formation.sopra.biblio.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import formation.sopra.biblio.dto.avis.AvisRequest;
-import formation.sopra.biblio.dto.avis.AvisResponse;
-import formation.sopra.biblio.exception.AvisNotFoundException;
-import formation.sopra.biblio.model.Avis;
-import formation.sopra.biblio.repository.IDAOAvis;
-import formation.sopra.biblio.repository.IDAOLivre;
-
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -18,7 +8,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import formation.sopra.biblio.dto.avis.AvisRequest;
+import formation.sopra.biblio.dto.avis.AvisResponse;
+import formation.sopra.biblio.exception.AvisNotFoundException;
+import formation.sopra.biblio.model.Avis;
+import formation.sopra.biblio.repository.IDAOAvis;
+import formation.sopra.biblio.repository.IDAOLivre;
 
 @RestController
 @RequestMapping("/api/avis")
@@ -52,7 +51,7 @@ public class AvisController {
         a.setNote(avisRequest.getNote());
         a.setCommentaire(avisRequest.getCommentaire());
         a.setDate(avisRequest.getDate());
-        a.setLivre(daoLivre.findById(avisRequest.getLivreId()));
+        a.setLivre(daoLivre.findById(avisRequest.getLivreId()).orElseThrow());
 
         return AvisResponse.convert(daoAvis.save(a));
     }
@@ -68,7 +67,7 @@ public class AvisController {
         a.setNote(avisRequest.getNote());
         a.setCommentaire(avisRequest.getCommentaire());
         a.setDate(avisRequest.getDate());
-        a.setLivre(daoLivre.findById(avisRequest.getLivreId()));
+        a.setLivre(daoLivre.findById(avisRequest.getLivreId()).orElseThrow());
 
         return AvisResponse.convert(daoAvis.save(a));
     }

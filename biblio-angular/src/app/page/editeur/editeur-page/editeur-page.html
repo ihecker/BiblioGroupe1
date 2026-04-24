@@ -1,0 +1,123 @@
+<div class="container mt-4">
+  <!-- LISTE DES EDITEURS -->
+
+
+  <div class="card shadow border-0">
+    <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">Gestion des éditeurs</h5>
+      <span class="badge bg-light text-dark">
+        {{ (editeurs$ | async)?.length || 0 }} auteurs
+      </span>
+    </div>
+    <div class="table-responsive">
+    <table class = "table table-hover align-middle mb-0">
+    <thead class ="table-light">
+    <tr>
+      <th class="text-center">ID</th>
+      <th class="text-center">Nom</th>
+      <th class="text-center">Pays</th>
+      <th class="text-center">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let editeur of editeurs$ | async">
+      <tr >
+        <td class="text-center fw-semibold">{{editeur.id}}</td>
+        <td class="text-center fw-semibold">{{editeur.nom}}</td>
+        <td class="text-center fw-semibold">{{editeur.pays}}</td>
+        <td class="text-center fw-semibold">
+          @if (idVoirLivre!=editeur.id){
+            <button (click)="voirLivre(editeur.id)" class="btn btn-secondary">Voir livres</button>
+          } @else {
+            <button (click)="pasVoirLivre()" class="btn btn-secondary">Pas voir livres</button>
+          }
+          <button (click)="activateModification(editeur.id)" class="btn btn-warning">MODIFIER</button>
+          <button (click)="deleteEditeur(editeur.id)" class="btn btn-danger">DELETE</button>
+        </td>
+      </tr>
+
+      @if (idVoirLivre == editeur.id) {
+        <tr>
+          <td colspan="4" class="bg-light text-center py-4">
+
+            <div class="mx-auto" style="max-width: 600px;">
+
+              @if (livres && livres.length > 0) {
+                <div class="card border-0 shadow-sm">
+                  <div class="card-body py-3 px-4">
+
+                    <h6 class="text-secondary mb-3">
+                      Livres de l'éditeur
+                    </h6>
+
+                    <ul class="list-group list-group-flush text-start">
+                      <li
+                        *ngFor="let livre of livres"
+                        class="list-group-item d-flex justify-content-between align-items-center px-0 py-2"
+                      >
+                        <span>{{ livre.titre }}</span>
+
+                        <span class="badge bg-light text-dark border">
+                    #{{ livre.id }}
+                  </span>
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+              } @else {
+                  Pas de livres
+              }
+
+            </div>
+
+          </td>
+        </tr>
+      }
+
+    </ng-container>
+    </tbody>
+  </table>
+    </div>
+  </div>
+  <br/>
+  <br/>
+  <div class="card shadow-sm border-0">
+    <div class="card-header text-white" [class.bg-black]="idModif == null" [class.bg-warning]="idModif != null">
+      <h5 class="mb-0">
+        {{ idModif == null ? "Ajouter un éditeur" : "Modifier un éditeur" }}
+      </h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="formEditeur" (ngSubmit)="idModif == null ? addEditeur() : modifEditeur(idModif)">
+        @if (idModif != null) {
+          <div class="alert alert-warning">Modification de l'éditeur #{{ idModif }}</div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label">Nom</label>
+          <input type="text" class="form-control" formControlName="nom" [class.is-invalid]="formNomCtrl.invalid && formNomCtrl.touched">
+          <div class="invalid-feedback">Le nom est obligatoire.</div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label">Pays</label>
+          <input type="text" class="form-control" formControlName="pays" [class.is-invalid]="formPaysCtrl.invalid && formPaysCtrl.touched">
+          <div class="invalid-feedback">Le pays est obligatoire.</div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button type="submit" class="btn" [class.btn-success]="idModif == null" [class.btn-warning]="idModif != null" [disabled]="formEditeur.invalid">
+            {{ idModif == null ? "Ajouter" : "Modifier" }}
+          </button>
+
+          @if (idModif != null) {
+            <button type="button" class="btn btn-secondary" (click)="deactivateModification()">
+              Annuler
+            </button>
+          }
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

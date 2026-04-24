@@ -65,7 +65,7 @@ public class EditeurController {
         return EditeurResponse.convert(daoEditeur.save(editeur));
     }
 
-    @PatchMapping("/{id")
+    @PatchMapping("/{id}")
     public EditeurResponse patch(@PathVariable int id, @RequestBody EditeurRequest editeurRequest) {
         Editeur editeur = daoEditeur.findById(id)
                 .orElseThrow( () -> new EditeurNotFoundException("Editeur with id:"+id+"does not exist") );
