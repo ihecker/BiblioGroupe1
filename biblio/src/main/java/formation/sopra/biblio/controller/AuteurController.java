@@ -2,6 +2,7 @@ package formation.sopra.biblio.controller;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,11 +11,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import formation.sopra.biblio.dto.Auteur.AuteurRequest;
 import formation.sopra.biblio.dto.Auteur.AuteurResponse;
 import formation.sopra.biblio.model.Auteur;
 import formation.sopra.biblio.repository.IDAOAuteur;
+import jakarta.validation.Valid;
 
 
 
@@ -40,15 +43,15 @@ public class AuteurController {
 
     @GetMapping("/{id}")
     public AuteurResponse getAuteurById(@PathVariable int id) {
-        return AuteurResponse.convert(daoAuteur.findById(id).orElseThrow( () -> new RuntimeException("Auteur non trouvé avec l'id: " + id)));
+        return AuteurResponse.convert(daoAuteur.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Auteur non trouvé avec l'id: " + id)));
     }
 
     @PutMapping("/{id}")
-    public AuteurResponse modifierAuteur(@PathVariable int id, @RequestBody AuteurRequest request) {
+    public AuteurResponse modifierAuteur(@PathVariable int id, @Valid @RequestBody AuteurRequest request) {
         
 
         //find auteur
-        Auteur a = daoAuteur.findById(id).orElseThrow( () -> new RuntimeException("Auteur non trouvé avec l'id: " + id));
+        Auteur a = daoAuteur.findById(id).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Auteur non trouvé avec l'id: " + id));
 
         //maj auteur 
         a.setNom(request.getNom());
@@ -62,7 +65,7 @@ public class AuteurController {
     }
 
     @PostMapping
-    public AuteurResponse ajouterAuteur(@RequestBody AuteurRequest request) {
+    public AuteurResponse ajouterAuteur(@Valid @RequestBody AuteurRequest request) {
         return AuteurResponse
                 .convert(daoAuteur
                             .save(AuteurRequest.convert(request)));

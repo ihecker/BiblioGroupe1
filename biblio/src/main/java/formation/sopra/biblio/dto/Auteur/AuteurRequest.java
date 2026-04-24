@@ -1,11 +1,15 @@
 package formation.sopra.biblio.dto.Auteur;
 
 import formation.sopra.biblio.model.Auteur;
+import jakarta.validation.constraints.NotBlank;
 
 public class AuteurRequest {
 
+    @NotBlank
     private String nom;
+    @NotBlank
     private String prenom;
+    @NotBlank
     private String nationalite;
 
   
