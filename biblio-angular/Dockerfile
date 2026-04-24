@@ -10,7 +10,7 @@ COPY . .
 
 RUN ./node_modules/.bin/ng build
 
-FROM ngnix:latest
+FROM nginx:latest
 
 COPY --from=builder /app/dist/biblio-angular/browser /usr/share/nginx/html
 
