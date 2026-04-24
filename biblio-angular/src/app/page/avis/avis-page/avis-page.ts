@@ -51,9 +51,6 @@ export class AvisPage {
   ngOnInit(): void {
     this.titleService.setTitle("Avis");
 
-    this.avis$ = this.refresh$.pipe(
-      startWith(0), switchMap(() => this.avisService.findAll())
-    );
     this.livres$ = this.livreService.findAll();
 
     const noteValueValidator = (control: AbstractControl): ValidationErrors | null => {
@@ -72,6 +69,10 @@ export class AvisPage {
       date: this.formDateCtrl,
       livre: this.formLivreCtrl
     });
+
+    this.avis$ = this.refresh$.pipe(
+      startWith(0), switchMap(() => this.avisService.findAll())
+    );
 
   }
 
