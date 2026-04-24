@@ -6,6 +6,7 @@ import { Observable, startWith, Subject, switchMap } from 'rxjs';
 import { EditeurResponse } from '../../../model/editeur-response';
 import { FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { EditeurRequest } from '../../../model/editeur-request';
+import { Livre } from '../../../model/livre';
 
 @Component({
   selector: 'app-editeur-page',
@@ -18,6 +19,8 @@ export class EditeurPage implements OnInit {
   private refresh$: Subject<void> = new Subject<void>();
 
   protected idModif?: number;
+  protected idVoirLivre?:number;
+  protected livres?:Livre[];
 
   protected formEditeur!: FormGroup;
   protected formNomCtrl!: FormControl;
@@ -85,10 +88,25 @@ export class EditeurPage implements OnInit {
 
   private reload(): void {
     this.refresh$.next();
+    console.log(this.editeurs$);
   }
 
   protected deleteEditeur(id:number):void{
     this.editeurService.deleteEditeur(id).subscribe(()=>this.reload())
     this.deactivateModification();
   }
+
+  protected voirLivre(id:number){
+    this.editeurService.findByIdWithLivre(id).subscribe((editeur) => {
+      this.livres = editeur.livres;
+      this.reload();
+    });
+    this.idVoirLivre=id;
+  }
+
+  protected pasVoirLivre(){
+    this.idVoirLivre = undefined;
+    this.livres = undefined;
+  }
+
 }
