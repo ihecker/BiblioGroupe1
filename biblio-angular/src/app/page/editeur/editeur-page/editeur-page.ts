@@ -45,10 +45,23 @@ export class EditeurPage implements OnInit {
 
   protected activateModification(id: number): void {
     this.idModif = id;
+    this.updateForm(id);
+  }
+
+  private updateForm(id:number):void{
+    this.editeurs$.subscribe(es=> {
+      for (let e of es){
+        if (e.id == id){
+          this.formNomCtrl.patchValue(e.nom);
+          this.formPaysCtrl.patchValue(e.pays);
+        }
+      }
+    });
   }
 
   protected deactivateModification(): void {
     this.idModif = undefined;
+    this.clearForm();
   }
 
   protected addEditeur(): void {
@@ -58,7 +71,24 @@ export class EditeurPage implements OnInit {
     this.editeurService.addEditeur(editeurRequest).subscribe(() => this.reload());
   }
 
+  protected modifEditeur(id:number):void {
+    const editeurRequest: EditeurRequest = {} as EditeurRequest
+    editeurRequest.nom = this.formNomCtrl.value;
+    editeurRequest.pays = this.formPaysCtrl.value;
+    this.editeurService.patchEditeur(editeurRequest,id).subscribe(()=>this.reload());
+  }
+
+  protected clearForm():void{
+    this.formNomCtrl.reset();
+    this.formPaysCtrl.reset()
+  }
+
   private reload(): void {
     this.refresh$.next();
+  }
+
+  protected deleteEditeur(id:number):void{
+    this.editeurService.deleteEditeur(id).subscribe(()=>this.reload())
+    this.deactivateModification();
   }
 }

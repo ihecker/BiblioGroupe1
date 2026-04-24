@@ -14,12 +14,11 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 public class SecurityConfig {
 
-
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(authorization -> {
-            //authorization.requestMatchers("/api/auth", "/api/inscription").permitAll();
-            //authorization.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
+            // authorization.requestMatchers("/api/auth", "/api/inscription").permitAll();
+            authorization.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll();
             authorization.requestMatchers("/**").permitAll();
         });
 
@@ -27,7 +26,8 @@ public class SecurityConfig {
 
         http.cors(Customizer.withDefaults());
 
-        //http.addFilterBefore(jwtHeaderFilter, UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterBefore(jwtHeaderFilter,
+        // UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
