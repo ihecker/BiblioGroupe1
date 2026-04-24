@@ -10,7 +10,7 @@
 
     <div class="card-body">
 
-      <form [formGroup]="formAuteur" (ngSubmit)="addAuteur()">
+      <form [formGroup]="formAuteur" (ngSubmit)="submitAuteur()">
 
         <div class="mb-3">
           <label class="form-label">Nom</label>
@@ -45,8 +45,15 @@
           </div>
         </div>
 
-        <button class="btn btn-success w-100" type="submit">
-          Ajouter
+        <button type="submit" class="btn btn-success">
+            {{ selectedAuteur ? 'Modifier' : 'Ajouter' }}
+        </button>
+
+        <button *ngIf="selectedAuteur"
+          type="button"
+          class="btn btn-secondary ms-2"
+          (click)="cancelEdit()">
+          Annuler
         </button>
 
       </form>
@@ -100,6 +107,12 @@
 
             <td class="text-end">
 
+              <button type="button" class="btn btn-outline-warning btn-sm me-2"
+                (click)="modifierAuteur(auteur)">
+                Modifier
+              </button>
+
+              
               <button class="btn btn-outline-danger btn-sm"
                       (click)="deleteAuteur(auteur.id!)">
                 Supprimer

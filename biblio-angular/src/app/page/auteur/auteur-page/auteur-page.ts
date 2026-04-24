@@ -24,6 +24,7 @@ export class AuteurPage {
 
   refresh$ = new Subject<void>();
   formAuteur!: FormGroup;
+  selectedAuteur: Auteur | null | undefined;
 
   //protected formNomCtrl!: FormControl;
   //protected formPrenomCtrl!: FormControl;
@@ -57,23 +58,48 @@ export class AuteurPage {
   loadAuteur() {
    this.auteurs$ = this.auteurService.getAll();
   }
+  
+  deleteAuteur(id: number) {
+    this.auteurService.delete(id).subscribe(()  => {this.reload()});
+  }
 
-  addAuteur() {
+  
+  submitAuteur() {
 
   if (this.formAuteur.invalid) {
     this.formAuteur.markAllAsTouched();
     return;
   }
 
-  this.auteurService.add(this.formAuteur.value)
-    .subscribe(() => {
-      this.reload();
-      this.formAuteur.reset();
-    });
-  }
+  const auteur: Auteur = {
+    id: this.selectedAuteur ? this.selectedAuteur.id! : 0,
+    ...this.formAuteur.value
+  };
 
-  deleteAuteur(id: number) {
-    this.auteurService.delete(id).subscribe(()  => {this.reload()});
+  const request = this.selectedAuteur
+    ? this.auteurService.update(auteur)
+    : this.auteurService.add(auteur);
+
+  request.subscribe(() => {
+    this.reload();
+    this.formAuteur.reset();
+    this.selectedAuteur = null;
+  });
+}
+
+modifierAuteur(auteur: Auteur) {
+  this.selectedAuteur = auteur;
+
+  this.formAuteur.patchValue({
+    nom: auteur.nom,
+    prenom: auteur.prenom,
+    nationalite: auteur.nationalite
+  });
+}
+
+  cancelEdit() {
+    this.selectedAuteur = null;
+    this.formAuteur.reset();
   }
 
 }
