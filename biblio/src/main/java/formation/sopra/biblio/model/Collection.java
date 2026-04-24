@@ -25,6 +25,11 @@ public class Collection {
     public Collection() {
     }
 
+    public Collection(Integer id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
+
     public Collection(Integer id, String nom, List<Livre> livres) {
         this.id = id;
         this.nom = nom;
