@@ -67,8 +67,8 @@
 
         <label for="livre" class="col-sm-2 col-form-label">Livre</label>
         <select class="form-control mb-2" id="livre" formControlName="livre"
-            [class.is-invalid]="formLivreCtrl.invalid">
-            <option *ngFor="let l of livres$ | async">{{l.id}} - {{l.titre}}</option>
+            [class.is-invalid]="formLivreCtrl.invalid" [compareWith]="compareById">
+            <option *ngFor="let l of livres$ | async"  [ngValue]="l">{{l.id}} - {{l.titre}}</option>
         </select>
         <div *ngIf="formLivreCtrl.hasError('required')" class="invalid-feedback">Le livre est obligatoire</div>
 
