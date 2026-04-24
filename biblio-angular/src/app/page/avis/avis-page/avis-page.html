@@ -30,19 +30,32 @@
 
     <h3>Modification avis</h3>
 
-    <label for="modifAvisNote" class="form-label">Note</label>
-    <input type="text" class="form-control" id="modifAvisNote" [(ngModel)]="updatedAvis.note">
-    <label for="modifAvisCommentaire" class="form-label">Commentaire</label>
-    <input type="text" class="form-control" id="modifAvisCommentaire" [(ngModel)]="updatedAvis.commentaire">
-    <label for="modifAvisDate" class="form-label">Date</label>
-    <input type="date" class="form-control" id="modifAvisDate" [(ngModel)]="updatedAvis.date">
-    <label for="modifAvisLivreId" class="form-label">Livre (id)</label>
-    <input type="number" class="form-control" id="modifAvisLivreId" [(ngModel)]="updatedAvis.livreId">
-    <label for="modifAvisLivreTitre" class="form-label">Livre (titre)</label>
-    <input type="text" class="form-control" id="modifAvisLivreTitre" [(ngModel)]="updatedAvis.livreTitre">
+      <form (submit)="updateAvis()" [formGroup]="formUpdateAvis">
 
+        <label for="updateNote" class="col-sm-2 col-form-label">Note</label>
+        <input type="number" class="form-control mb-2" id="updateNote" formControlName="note"
+            [class.is-invalid]="formUpdateNoteCtrl.invalid" />
+        <div *ngIf="formUpdateNoteCtrl.hasError('required')" class="invalid-feedback">La note est obligatoire</div>
+        <div *ngIf="formUpdateNoteCtrl.hasError('min') || formUpdateNoteCtrl.hasError('max')" class="invalid-feedback">La note doit être comprise entre 0 et 10
+        </div>
 
-    <button type="button" class="btn btn-success" (click)="updateAvis()">Valider</button>
+        <label for="updateCommentaire" class="col-2 col-form-label">Commentaire</label>
+        <input type="text" class="form-control mb-2" id="updateCommentaire" formControlName="commentaire" />
+
+        <label for="updateDate" class="col-sm-2 col-form-label">Date</label>
+        <input type="date" class="form-control mb-2" id="updateDate" formControlName="date" />
+        
+        <label for="updateLivre" class="col-sm-2 col-form-label">Livre</label>
+        <select class="form-control mb-2" id="updateLivre" formControlName="livre"
+            [class.is-invalid]="formUpdateLivreCtrl.invalid" [compareWith]="compareById">
+            <option *ngFor="let l of livres$ | async"  [ngValue]="l">{{l.id}} - {{l.titre}}</option>
+        </select>
+        <div *ngIf="formUpdateLivreCtrl.hasError('required')" class="invalid-feedback">Le livre est obligatoire</div>
+
+        <div class="mt-3">
+            <input [disabled]="formUpdateAvis.invalid" type="submit" class="btn btn-success" value="Modifier" />
+        </div>
+    </form>
 </div>
 
 <div *ngIf="!update">
