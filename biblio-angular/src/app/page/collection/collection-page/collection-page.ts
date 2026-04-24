@@ -16,7 +16,7 @@ export class CollectionPage implements OnInit{
 
 private titleService: Title = inject(Title);
 private collectionService: CollectionService = inject(CollectionService);
-// permet de faciliter la manipulation de formulaire(contrôle...)
+// permet de faciliter la manipulation de formulaire(controle...)
 private formBuilder: FormBuilder = inject(FormBuilder);
 
 protected collection$!: Observable<Collection[]>;
@@ -27,7 +27,7 @@ protected formNomCtrl!: FormControl;
 
 // s'execute quand on affiche la page
   ngOnInit(): void {
-// donne le nom à l'onglet
+// donne le nom a l'onglet
     this.titleService.setTitle("Liste des collections");
 
     // a chaque fois que je refresh, ca recharge la liste de collection
