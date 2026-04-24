@@ -4,10 +4,10 @@
     <div class="mb-3 row">
         <label for="username" class="col-sm-2 col-form-label">Nom d'utilisateur</label>
         <div class="col-sm-10">
-            <input type="text" class="form-control" id="username" formControlName="login" />
+            <input type="text" class="form-control" id="username" formControlName="username" />
         </div>
-        <div *ngIf="formLoginCtrl?.hasError('required')">Le libellé est obligatoire</div>
-        <div *ngIf="formLoginCtrl?.hasError('lowercase')">Le login doit être saisi en minuscule
+        <div *ngIf="formLoginCtrl.hasError('required')">Le libellé est obligatoire</div>
+        <div *ngIf="formLoginCtrl.hasError('lowercase')">Le login doit être saisi en minuscule
 </div>
     </div>
 
@@ -15,9 +15,9 @@
         <label for="password" class="col-sm-2 col-form-label">Mot de passe</label>
         <div class="col-sm-10">
             <input type="password" class="form-control" id="password" formControlName="password" />
-        
+
         </div>
-        <div *ngIf="formPasswordCtrl?.hasError('required')">Le mot de passe est obligatoire</div>
+        <div *ngIf="formPasswordCtrl.hasError('required')">Le mot de passe est obligatoire</div>
     </div>
 
     <div>

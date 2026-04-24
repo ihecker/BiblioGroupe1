@@ -68,6 +68,7 @@ export class LoginPage implements OnInit {
     this.authService.auth(formAuth).subscribe(resp => {
       if (resp.token.length > 0) {
         this.authService.token = resp.token;
+        console.log(resp.token);
         this.router.navigate(['/livres']);
       }
     });
