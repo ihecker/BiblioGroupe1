@@ -27,7 +27,7 @@ export class AvisPage {
 
   protected formAvis!: FormGroup;
   protected formNoteCtrl!: FormControl;
-  protected formCommentaireCtrl!: FormControl;
+  protected formCommentaireCtrl: FormControl = new FormControl();
   protected formDateCtrl: FormControl = new FormControl((new Date()).toISOString().substring(0, 10));
   protected formLivreCtrl!: FormControl;
 
@@ -50,16 +50,20 @@ export class AvisPage {
 
     this.formNoteCtrl = this.formBuilder.control("", [Validators.required, noteValueValidator]);
     //this.formDateCtrl = this.formBuilder.control("", Validators.required);
-    this.formCommentaireCtrl = this.formBuilder.control("", Validators.required);
+    //this.formCommentaireCtrl = this.formBuilder.control("", Validators.required);
     this.formLivreCtrl = this.formBuilder.control("", Validators.required);
-    
+
     this.formAvis = this.formBuilder.group({
       note: this.formNoteCtrl,
       commentaire: this.formCommentaireCtrl,
       date: this.formDateCtrl,
-      livre: this.formLivreCtrl.value
+      livre: this.formLivreCtrl
     });
 
+  }
+
+  public compareById(a: any, b: any): boolean {
+    return a && b ? a.id === b.id : a === b;
   }
 
   private reload() {
@@ -85,6 +89,8 @@ export class AvisPage {
       livreId: this.formLivreCtrl.value.id,
       livreTitre: this.formLivreCtrl.value.titre
     };
+
+    console.log(avis);
 
     this.avisService.add(avis).subscribe(() => this.reload());
   }
