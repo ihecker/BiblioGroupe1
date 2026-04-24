@@ -61,15 +61,15 @@
                             </td>
 
                             <td class="text-end">
-                                <button *ngIf="collectionEnEdition?.id !== collection.id" class="btn btn-warning"
+                                <button *ngIf="collectionEnEdition.id !== collection.id" class="btn btn-warning"
                                     (click)="updateCollection(collection)">Modifier</button>
-                                <button *ngIf="collectionEnEdition?.id == collection.id" class="btn btn-success"
+                                <button *ngIf="collectionEnEdition.id == collection.id" class="btn btn-success"
                                     (click)="sauvegarder()">Sauvegarder</button>
                             </td>
                             <td>
-                                <button *ngIf="collectionEnEdition?.id !== collection.id" class="btn btn-danger"
+                                <button *ngIf="collectionEnEdition.id !== collection.id" class="btn btn-danger"
                                     (click)="deleteCollection(collection)">Supprimer</button>
-                                <button *ngIf="collectionEnEdition?.id == collection.id" class="btn btn-secondary"
+                                <button *ngIf="collectionEnEdition.id == collection.id" class="btn btn-secondary"
                                     (click)="annuler()">Annuler</button>
 
 
