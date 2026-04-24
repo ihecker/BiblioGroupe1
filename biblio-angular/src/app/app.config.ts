@@ -4,13 +4,14 @@ import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
-import { urlInterceptor } from './interceptor/url-interceptor'
+import { urlInterceptor } from './interceptor/url-interceptor';
+import { jwtHeaderInterceptorInterceptor } from './interceptor/jwt-header-interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
     provideClientHydration(withEventReplay()),
-    provideHttpClient(withInterceptors([urlInterceptor]))
-  ]
+    provideHttpClient(withInterceptors([urlInterceptor, jwtHeaderInterceptorInterceptor])),
+  ],
 };
