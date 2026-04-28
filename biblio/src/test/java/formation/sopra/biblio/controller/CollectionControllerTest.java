@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -38,6 +39,9 @@ public class CollectionControllerTest {
     // pour convertir java et json
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
      @MockitoBean
     private IDAOCollection daoCollection;

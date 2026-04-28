@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,9 @@ public class AuteurControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
     //@MockitoBean
     //private JpaUserDetailsService jpaUserDetailsService;
