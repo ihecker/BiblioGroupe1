@@ -17,7 +17,7 @@ pipeline {
                     sh 'npm install'
 
                     withSonarQubeEnv('sonar'){
-                        sh './node_modules/.bin/sonar-scanner -Dsonar.projectKey=quest-angular'
+                        sh './node_modules/.bin/sonar-scanner -Dsonar.projectKey=biblio-angular'
                     }
                     sh './node_modules/.bin/ng build'
                 }
