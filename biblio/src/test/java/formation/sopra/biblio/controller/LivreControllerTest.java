@@ -33,7 +33,7 @@ import formation.sopra.biblio.repository.IDAOLivre;
 import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 @WebMvcTest(controllers = LivreController.class)
-@Import(SecurityConfig.class)
+
 public class LivreControllerTest {
     @MockitoBean
     private IDAOLivre daoLivre;
