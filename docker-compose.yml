@@ -21,7 +21,6 @@ services:
 
   biblio-app:
     image: ajc/biblio
-    build: ./biblio
     container_name: biblio-app
     networks:
       - devops
@@ -47,6 +46,7 @@ services:
 
 networks:
   devops:
+    external: true
     name: devops
 
 volumes:
