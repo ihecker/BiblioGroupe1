@@ -18,7 +18,7 @@ pipeline {
 
             steps {
                 dir('biblio-angular') {
-                    sh 'npm install -D @sonar/scan'
+                    sh 'npm install'
 
                     withSonarQubeEnv('sonarqube-server') {
                         sh './node_modules/.bin/sonar-scanner -Dsonar.projectKey=biblio-angular'
