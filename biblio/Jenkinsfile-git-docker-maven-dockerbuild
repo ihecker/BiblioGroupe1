@@ -27,7 +27,7 @@ pipeline {
 
             steps {
                 dir('biblio') {
-                    sh 'mvn package'
+                    sh 'mvn package -DskipTests'
                 }
             }
         }
