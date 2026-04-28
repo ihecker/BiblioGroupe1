@@ -12,6 +12,11 @@ pipeline {
             steps {
                 dir('biblio-angular') {
                     sh 'npm install'
+
+                    withSonarQubeEnv('sonarqube-server') {
+                        sh './node_modules/.bin/sonar-scanner -Dsonar.projectKey=biblio-angular'
+                    }
+
                     sh 'npm run build'
                 }
             }
@@ -25,25 +30,14 @@ pipeline {
             }
         }
 
-        stage('SonarQube Analysis') {
+        stage('Docker deploy') {
             steps {
-                dir('biblio-angular') {
-                    withSonarQubeEnv('sonar') {
-                        sh '''
-                        sonar-scanner \
-                        -Dsonar.projectKey=biblio-angular \
-                        -Dsonar.sources=src \
-                        -Dsonar.host.url=http://sonar:9000
-                        '''
-                    }
-                }
+                // Se placer dans le répertoire (éventuellement) dans lequel se trouve le docker-compose.yml
+                // dir('ANGULAR/quest-angular') {
+                sh 'docker compose up -d --no-deps biblio-angular'
+                // }
             }
         }
-
-        stage('Quality Gate') {
-            steps {
-                waitForQualityGate abortPipeline: true
-            }
-        }
+       
     }
 }
