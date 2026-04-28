@@ -1,36 +1,40 @@
 pipeline {
-    agent {
-        docker {
-            image 'node:20'
-            args '--network devops'
-        }
-    }
+    agent any
 
     stages {
-
-        stage('Install & Build') {
+        stage('NPM build') {
+            agent {
+                docker {
+                    image 'node:lts-bullseye'
+                    args '--network devops -v $HOME/.npm:/root/.npm:z -u root'
+                    reuseNode true
+                }
+            }
             steps {
                 dir('biblio-angular') {
                     sh 'npm install'
-                    sh 'npm run build'
+                    sh './node_modules/.bin/ng build'
                 }
             }
         }
 
         stage('SonarQube') {
+            agent {
+                docker {
+                    image 'sonarsource/sonar-scanner-cli:latest'
+                    args '--network devops -u root'
+                    reuseNode true
+                }
+            }
             steps {
                 dir('biblio-angular') {
-                    script {
-                        def scannerHome = tool 'sonar-scanner'
-
-                        withSonarQubeEnv('sonar') {
-                            sh """
-                            ${scannerHome}/bin/sonar-scanner \
-                            -Dsonar.projectKey=biblio-angular \
-                            -Dsonar.sources=src \
-                            -Dsonar.host.url=http://sonar:9000
-                            """
-                        }
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                            sonar-scanner \
+                                -Dsonar.projectKey=biblio-angular \
+                                -Dsonar.sources=src \
+                                -Dsonar.exclusions=**/*.spec.ts,**/node_modules/**
+                        '''
                     }
                 }
             }
@@ -39,19 +43,15 @@ pipeline {
         stage('Docker build') {
             steps {
                 dir('biblio-angular') {
-                    sh 'docker build -t biblio-angular .'
+                    sh 'docker build -t ajc/biblio-angular .'
                 }
             }
         }
 
         stage('Docker deploy') {
             steps {
-                // Se placer dans le répertoire (éventuellement) dans lequel se trouve le docker-compose.yml
-                // dir('ANGULAR/quest-angular') {
                 sh 'docker compose up -d --no-deps biblio-angular'
-                // }
             }
         }
-       
     }
 }
