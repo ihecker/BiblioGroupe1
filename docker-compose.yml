@@ -16,7 +16,7 @@ services:
       #POur persister les data apres supression / mise a jour du container
       - mysql-data:/var/lib/mysql
     networks:
-      - quest
+      - devops
     ports:
       - 3307:3306
     healthcheck: #test pour verifier que le service soit pret
@@ -30,7 +30,7 @@ services:
     build: ./biblio
     container_name: biblio-app
     networks:
-      - quest
+      - devops
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/biblio
       SPRING_DATASOURCE_USERNAME: root
@@ -62,8 +62,8 @@ services:
 
 networks:
   quest:
-    name: quest-test
+    name: devops
 
 volumes:
   mysql-data:
-    name: quest-mysql-data
+    name: devops-mysql-data

@@ -26,7 +26,7 @@ import formation.sopra.biblio.dto.Auteur.AuteurRequest;
 import formation.sopra.biblio.dto.Auteur.AuteurResponse;
 import formation.sopra.biblio.model.Auteur;
 import formation.sopra.biblio.repository.IDAOAuteur;
-
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 @WebMvcTest(controllers = AuteurController.class)
 public class AuteurControllerTest {
@@ -37,15 +37,17 @@ public class AuteurControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    //@MockitoBean
-    //private JpaUserDetailsService jpaUserDetailsService;
+    // @MockitoBean
+    // private JpaUserDetailsService jpaUserDetailsService;
 
-    //@MockitoBean
-    //private JwtUtils jwtUtils;
+    // @MockitoBean
+    // private JwtUtils jwtUtils;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
     @MockitoBean
     private IDAOAuteur daoAuteur;
-    
 
     private static final Integer AUTEUR_ID = 1;
     private static final String NATIONALITE = "Un titre de livre intriguant";
@@ -55,22 +57,19 @@ public class AuteurControllerTest {
     private static final String API_URL = "/api/auteur";
     private static final String API_URL_BY_ID = API_URL + "/" + AUTEUR_ID;
 
-
     private final Auteur AUTEUR = new Auteur(AUTEUR_ID, NATIONALITE, NOM, PRENOM);
     private final AuteurResponse AUTEUR_RESPONSE = new AuteurResponse(AUTEUR_ID, NATIONALITE, NOM, PRENOM);
     private final AuteurRequest AUTEUR_REQUEST = new AuteurRequest(NATIONALITE, NOM, PRENOM);
 
-     private final AuteurRequest AUTEUR_REQUEST_INVALID = new AuteurRequest(null, null, null);
-
-
+    private final AuteurRequest AUTEUR_REQUEST_INVALID = new AuteurRequest(null, null, null);
 
     @Test
     public void shouldgetAllAuteurReturnUnauthorized() throws Exception {
-        //given 
+        // given
 
-        //when
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(API_URL));
-        //then 
+        // then
 
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
@@ -80,27 +79,26 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shouldgetAllAuteurReturnOk() throws Exception {
 
-        //given 
+        // given
         Mockito.when(daoAuteur.findAll()).thenReturn(List.of(AUTEUR));
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(API_URL));
 
-        //then
+        // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
         verify(daoAuteur).findAll();
     }
 
-
-    //BYID
+    // BYID
 
     @Test
     public void shouldgetAuteurByIdReturnUnauthorized() throws Exception {
-        //given 
+        // given
 
-        //when
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(API_URL_BY_ID));
-        //then 
+        // then
 
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
@@ -110,13 +108,13 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shouldgetAuteurByIdReturnNotFound() throws Exception {
 
-        //given 
+        // given
         Mockito.when(daoAuteur.findById(AUTEUR_ID)).thenReturn(Optional.empty());
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(API_URL_BY_ID));
 
-        //then
+        // then
         result.andExpect(MockMvcResultMatchers.status().isNotFound());
         verify(daoAuteur).findById(AUTEUR_ID);
     }
@@ -125,28 +123,27 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shouldgetAuteurByIdReturnOk() throws Exception {
 
-        //given 
+        // given
         Mockito.when(daoAuteur.findById(AUTEUR_ID)).thenReturn(Optional.of(AUTEUR));
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.get(API_URL_BY_ID));
 
-        //then
+        // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
         verify(daoAuteur).findById(AUTEUR_ID);
     }
 
-
-    //CREATE
+    // CREATE
 
     @Test
     public void shouldaddAuteurReturnUnauthorized() throws Exception {
-        //given 
+        // given
 
-        //when
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(API_URL)
-        .with(csrf()));
-        //then 
+                .with(csrf()));
+        // then
 
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
@@ -156,17 +153,17 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shouldaddAuteurReturnOk() throws Exception {
 
-        //given 
+        // given
         Mockito.when(daoAuteur.save(Mockito.any(Auteur.class))).thenReturn(AUTEUR);
         String json = objectMapper.writeValueAsString(AUTEUR_REQUEST);
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(API_URL)
-        .contentType("application/json")
-            .content(json)
-            .with(csrf()));
+                .contentType("application/json")
+                .content(json)
+                .with(csrf()));
 
-        //then
+        // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
         verify(daoAuteur).save(Mockito.any(Auteur.class));
     }
@@ -175,31 +172,27 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shouldaddAuteurReturnBadRequest() throws Exception {
 
-        //given 
+        // given
         String json = objectMapper.writeValueAsString(AUTEUR_REQUEST_INVALID);
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.post(API_URL)
-            .contentType("application/json")
-            .content(json)
-            .with(csrf()));
-        //then
+                .contentType("application/json")
+                .content(json)
+                .with(csrf()));
+        // then
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-
-
-
-
-    //UPDATE 
+    // UPDATE
 
     @Test
     public void shouldupdateAuteurReturnUnauthorized() throws Exception {
-        //given 
+        // given
 
-        //when
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.put(API_URL_BY_ID).with(csrf()));
-        //then 
+        // then
 
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
@@ -209,55 +202,52 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shouldupdateAuteurReturnOk() throws Exception {
 
-        //given 
+        // given
         Mockito.when(daoAuteur.findById(Mockito.anyInt())).thenReturn(Optional.of(AUTEUR));
         Mockito.when(daoAuteur.save(Mockito.any(Auteur.class)))
-       .thenReturn(AUTEUR);
+                .thenReturn(AUTEUR);
         String json = objectMapper.writeValueAsString(AUTEUR_REQUEST);
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.put(API_URL_BY_ID)
-            .contentType("application/json")
-            .content(json)
-            .with(csrf())
-        );
+                .contentType("application/json")
+                .content(json)
+                .with(csrf()));
 
-        //then
+        // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
         verify(daoAuteur).save(Mockito.any(Auteur.class));
     }
 
     @Test
-    @WithMockUser   
+    @WithMockUser
     public void shouldupdateAuteurReturnBadRequest() throws Exception {
 
-        //given 
+        // given
         String json = objectMapper.writeValueAsString(AUTEUR_REQUEST_INVALID);
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.put(API_URL_BY_ID)
-            .contentType("application/json")
-            .content(json)
-            .with(csrf())
-            
+                .contentType("application/json")
+                .content(json)
+                .with(csrf())
+
         );
-        
-        //then
+
+        // then
         result.andExpect(MockMvcResultMatchers.status().isBadRequest());
     }
 
-
-    //DELETE
+    // DELETE
 
     @Test
     public void shoulddeleteAuteurReturnUnauthorized() throws Exception {
-        //given 
+        // given
 
-        //when
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete(API_URL_BY_ID)
-        .with(csrf())    
-    );
-        //then 
+                .with(csrf()));
+        // then
 
         result.andExpect(MockMvcResultMatchers.status().isUnauthorized());
 
@@ -267,15 +257,14 @@ public class AuteurControllerTest {
     @WithMockUser
     public void shoulddeleteAuteurReturnOk() throws Exception {
 
-        //given 
+        // given
         Mockito.doNothing().when(daoAuteur).deleteById(AUTEUR_ID);
 
-        //when 
+        // when
         ResultActions result = mockMvc.perform(MockMvcRequestBuilders.delete(API_URL_BY_ID)
-            .with(csrf())
-        );
-        
-        //then
+                .with(csrf()));
+
+        // then
         result.andExpect(MockMvcResultMatchers.status().isOk());
         verify(daoAuteur).deleteById(AUTEUR_ID);
     }
