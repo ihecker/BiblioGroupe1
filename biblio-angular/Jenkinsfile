@@ -28,7 +28,7 @@ pipeline {
             }
             steps {
                 dir('biblio-angular') {
-                    withSonarQubeEnv('SonarQube') {
+                    withSonarQubeEnv('sonar') {
                         sh '''
                             sonar-scanner \
                                 -Dsonar.projectKey=biblio-angular \
