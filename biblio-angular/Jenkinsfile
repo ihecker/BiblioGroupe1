@@ -1,8 +1,10 @@
 pipeline {
     agent {
-        docker {
-            image 'maven:3.9.6-eclipse-temurin-21'
-            args '--network devops -v /root/.m2:/root/.m2'
+        agent {
+            docker {
+                image 'node:20'
+                args '--network devops'
+            }
         }
     }
 
@@ -11,17 +13,33 @@ pipeline {
 
         stage('Build') {
             steps {
-                dir('quest-boot') {
-                    sh 'mvn clean package'
+                dir('biblio-angular') {
+                    sh 'npm install'
+                    sh 'npm run build'
                 }
             }
         }
 
+        stage('Docker build') {
+                    
+                steps {
+                    dir('biblio-angular') {
+                        sh 'docker build -t biblio-angular .'
+                    }
+                }
+                    
+            }
+
         stage('SonarQube Analysis') {
             steps {
-                dir('quest-boot') {
+                dir('biblio-angular') {
                     withSonarQubeEnv('sonar') {
-                        sh 'mvn clean verify sonar:sonar -Dsonar.projectKey=quest-boot'
+                        sh '''
+                        sonar-scanner \
+                        -Dsonar.projectKey=biblio-angular \
+                        -Dsonar.sources=src \
+                        -Dsonar.host.url=http://sonar:9000
+                        '''
                     }
                 }
             }
