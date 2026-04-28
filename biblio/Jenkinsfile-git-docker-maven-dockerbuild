@@ -1,0 +1,43 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Github checkout') {
+            steps {
+                script {
+                    git credentialsId: 'github-login',
+                        url: 'https://github.com/ihecker/BiblioGroupe1.git',
+                        branch: 'jenkins/jenkins-irwin'
+                }
+            }
+        }
+
+        stage('Maven build') {
+            // Demander à Jenkins d'exécuter le builder dans un container Docker
+            agent {
+                docker {
+                    image 'maven:3.9.11-eclipse-temurin-21'
+                    args '''
+                        -v $HOME/.m2:/root/.m2:z
+                        -u root
+                    '''
+                    reuseNode true // Permet de garder le même workspace entre les différents agents (any & docker)
+                }
+            }
+
+            steps {
+                dir('biblio') {
+                    sh 'mvn package'
+                }
+            }
+        }
+
+        stage('Docker build') {
+            steps {
+                dir('biblio') {
+                    sh 'docker build -t ajc/biblio-boot .'
+                }
+            }
+        }
+    }
+}

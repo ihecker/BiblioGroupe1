@@ -26,7 +26,7 @@ services:
       interval: 5s
 
   biblio-app:
-    #image: biblio-app:latest
+    image: ajc/biblio
     build: ./biblio
     container_name: biblio-app
     networks:
@@ -47,7 +47,8 @@ services:
 
   biblio-angular:
     #le chemin de l'image dans le dockerfile
-    build: ./biblio-angular
+    image: ajc/biblio-angular
+
     container_name: biblio-angular
 
     networks:
