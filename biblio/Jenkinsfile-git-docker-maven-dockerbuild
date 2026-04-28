@@ -2,32 +2,34 @@ pipeline {
     agent any
 
     stages {
-        stage('Github checkout') {
+        stage('Maven build') {
+            agent {
+                docker {
+                    image 'maven:3.9.11-eclipse-temurin-21'
+                    args '-v $HOME/.m2:/root/.m2:z -u root'
+                    reuseNode true
+                }
+            }
             steps {
-                script {
-                    git credentialsId: 'github-login',
-                        url: 'https://github.com/ihecker/BiblioGroupe1.git',
-                        branch: 'jenkins/jenkins-irwin'
+                dir('biblio') {
+                    sh 'mvn package'
                 }
             }
         }
 
-        stage('Maven build') {
-            // Demander à Jenkins d'exécuter le builder dans un container Docker
+        stage('SonarQube') {
             agent {
                 docker {
                     image 'maven:3.9.11-eclipse-temurin-21'
-                    args '''
-                        -v $HOME/.m2:/root/.m2:z
-                        -u root
-                    '''
-                    reuseNode true // Permet de garder le même workspace entre les différents agents (any & docker)
+                    args '-v $HOME/.m2:/root/.m2:z -u root'
+                    reuseNode true
                 }
             }
-
             steps {
                 dir('biblio') {
-                    sh 'mvn package'
+                    withSonarQubeEnv('SonarQube') {
+                        sh 'mvn verify sonar:sonar'
+                    }
                 }
             }
         }
@@ -37,6 +39,12 @@ pipeline {
                 dir('biblio') {
                     sh 'docker build -t ajc/biblio-boot .'
                 }
+            }
+        }
+
+        stage('Docker deploy') {
+            steps {
+                sh 'docker compose up -d --no-deps biblio-app'
             }
         }
     }

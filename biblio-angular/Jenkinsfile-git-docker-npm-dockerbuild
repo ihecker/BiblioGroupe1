@@ -2,33 +2,40 @@ pipeline {
     agent any
 
     stages {
-        stage('Github checkout') {
-            steps {
-                script {
-                    git credentialsId: 'github-login',
-                        url: 'https://github.com/ihecker/BiblioGroupe1.git',
-                        branch: 'jenkins/jenkins-irwin'
-                }
-            }
-        }
-
         stage('NPM build') {
-            // Demander à Jenkins d'exécuter le builder dans un container Docker
             agent {
                 docker {
                     image 'node:lts-bullseye'
-                    args '''
-                        -v $HOME/.npm:/root/.npm:z
-                        -u root
-                    '''
-                    reuseNode true // Permet de garder le même workspace entre les différents agents (any & docker)
+                    args '-v $HOME/.npm:/root/.npm:z -u root'
+                    reuseNode true
                 }
             }
-
             steps {
                 dir('biblio-angular') {
                     sh 'npm install'
                     sh './node_modules/.bin/ng build'
+                }
+            }
+        }
+
+        stage('SonarQube') {
+            agent {
+                docker {
+                    image 'sonarsource/sonar-scanner-cli:latest'
+                    args '-u root'
+                    reuseNode true
+                }
+            }
+            steps {
+                dir('biblio-angular') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                            sonar-scanner \
+                                -Dsonar.projectKey=biblio-angular \
+                                -Dsonar.sources=src \
+                                -Dsonar.exclusions=**/*.spec.ts,**/node_modules/**
+                        '''
+                    }
                 }
             }
         }
@@ -43,10 +50,7 @@ pipeline {
 
         stage('Docker deploy') {
             steps {
-                // Se placer dans le répertoire (éventuellement) dans lequel se trouve le docker-compose.yml
-                // dir('ANGULAR/quest-angular') {
                 sh 'docker compose up -d --no-deps biblio-angular'
-                // }
             }
         }
     }
