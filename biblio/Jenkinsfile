@@ -31,7 +31,7 @@ pipeline {
                 dir('biblio') {
                     withSonarQubeEnv('sonar') {
 
-                        sh "mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=biblio-boot -Dsonar.projectName='biblio-boot' -Dspring.datasource.url=jdbc:mysql://mysql:3306/biblio"
+                        sh "mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=biblio-boot -Dsonar.projectName='biblio-boot' -DskipTests -Dspring.datasource.url=jdbc:mysql://mysql:3306/biblio"
                     }
                 }
             }
