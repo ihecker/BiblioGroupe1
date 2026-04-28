@@ -19,8 +19,9 @@ services:
       - quest
     ports:
       - 3307:3306
-    healthcheck: #test pour verifier que le service soit pret
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+    healthcheck:
+      #test pour verifier que le service soit pret
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost" ]
       timeout: 3s
       retries: 10
       interval: 5s
@@ -40,7 +41,8 @@ services:
     #dit au container java d'attendre la mise en place du container mysql
     depends_on:
       #- mysql
-      mysql: #ici on attends que mysql demarre et que le service soit pret a être utilisé
+      mysql:
+        #ici on attends que mysql demarre et que le service soit pret a être utilisé
         condition: service_healthy
       #postgres:
       #condition: service_healthy

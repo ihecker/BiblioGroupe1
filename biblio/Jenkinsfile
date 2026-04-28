@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Maven build') {
+            // Demander à Jenkins d'exécuter le builder dans un container Docker
+            agent {
+                docker {
+                    image 'maven:3.9.11-eclipse-temurin-21'
+                    args '''
+                        -v $HOME/.m2:/root/.m2:z
+                        -u root
+                        --network quest-test
+                    ''' // On se place sur le réseau devops pour pouvoir contacter sonar !
+                    reuseNode true // Permet de garder le même workspace entre les différents agents (any & docker)
+                }
+            }
+
+            steps {
+                dir('biblio-boot') {
+                    withSonarQubeEnv('sonar') {
+                        sh "mvn verify sonar:sonar -Dsonar.projectKey=biblio-boot -Dsonar.projectName='biblio-boot'"
+                    }
+                }
+            }
+        }
+
+        stage('Docker build') {
+            steps {
+                dir('quest-boot') {
+                    sh 'docker build -t biblio-boot .'
+                }
+            }
+        }
+    }
+}
