@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import formation.sopra.biblio.config.SecurityConfig;
 import formation.sopra.biblio.model.Collection;
 import formation.sopra.biblio.repository.IDAOCollection;
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 @WebMvcTest(controllers = CollectionController.class)
 @Import(SecurityConfig.class)
@@ -31,7 +32,7 @@ public class CollectionControllerTest {
     private static final String API_URL_BY_ID = API_URL + "/" + ID;
 
     private final Collection COLLECTION = new Collection(ID, NOM);
-    
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -39,21 +40,24 @@ public class CollectionControllerTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-     @MockitoBean
+    @MockitoBean
     private IDAOCollection daoCollection;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
     // on veut verifier si la creation d'une collection fctionne correctement
     @Test
     @WithMockUser // Simule un utilisateur authentifie qui peut faire un POST
     void shouldCreateStatusOk() throws Exception {
         when(daoCollection.save(any())).thenReturn(COLLECTION);
-        mockMvc.perform(MockMvcRequestBuilders.post(API_URL)  // simule requete http
+        mockMvc.perform(MockMvcRequestBuilders.post(API_URL) // simule requete http
                 .contentType("application/json") // precise que la requete est en json
                 .content("{}"))
-                .andExpect(MockMvcResultMatchers.status().isOk());  //verifie que la reponse est ok
+                .andExpect(MockMvcResultMatchers.status().isOk()); // verifie que la reponse est ok
     }
 
-     @Test
+    @Test
     @WithMockUser
     void shouldUpdateStatusOk() throws Exception {
         when(daoCollection.findById(ID)).thenReturn(Optional.of(COLLECTION));
@@ -64,7 +68,7 @@ public class CollectionControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
     }
-    
+
     @Test
     @WithMockUser
     void shouldDeleteStatusOk() throws Exception {
