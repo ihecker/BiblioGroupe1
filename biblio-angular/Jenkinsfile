@@ -17,7 +17,7 @@ pipeline {
             }
 
             steps {
-                //dir('biblio-angular') {
+                dir('biblio-angular') {
                     sh 'npm install'
 
                     withSonarQubeEnv('sonarqube-server') {
@@ -25,7 +25,7 @@ pipeline {
                     }
 
                     sh './node_modules/.bin/ng build'
-                //}
+                }
             }
         }
 
