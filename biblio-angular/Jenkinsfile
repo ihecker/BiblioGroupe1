@@ -1,0 +1,43 @@
+pipeline {
+    // Demander à Jenkins d'exécuter le builder dans un container Docker
+    agent any
+
+    // Ces stages seront exécutés dans le container Docker
+    stages {
+        stage('Compilation angular'){
+            agent {
+                docker {
+                    image 'node:lts-bullseye'
+                    args '-v $HOME/.npm:/root/.npm:z --network devops'
+                    reuseNode true
+                }
+            }
+            steps {
+                dir('biblio-angular') {
+                    sh 'npm install'
+
+                    withSonarQubeEnv('sonar'){
+                        sh './node_modules/.bin/sonar-scanner -Dsonar.projectKey=quest-angular'
+                    }
+                    sh './node_modules/.bin/ng build'
+                }
+            }
+        }
+
+        stage('Docker build') {
+            steps {
+                dir('biblio-angular'){
+                    sh 'docker build -t biblio-app .'
+                }
+            }
+        }
+
+        stage('Docker compose'){
+            steps {
+                dir('.'){
+                    sh 'docker compose up -d --no-deps biblio-app biblio-angular'
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,49 @@
+pipeline {
+    // Demander à Jenkins d'exécuter le builder dans un container Docker
+    agent any
+
+    // Ces stages seront exécutés dans le container Docker
+    stages {
+//        stage('Maven version') {
+//            agent {
+//                docker {
+//            image 'maven:3.9.11-eclipse-temurin-21'
+//            args '-v $HOME/.m2:/root/.m2:z -u root'
+//            reuseNode true
+//        }
+//            }
+//            steps {
+//                dir('quest-boot') {
+//                    sh 'ls'
+//                    sh 'mvn -version'
+//                    sh 'mvn package -DskipTests'
+//                }
+//            }
+//        }
+
+        stage("Sonar analysis") {
+            tools {
+                maven 'maven-3.9'
+            }
+
+
+            steps {
+                dir('biblio') {
+                    withSonarQubeEnv('sonar') {
+
+                        sh "mvn clean verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=quest-boot -Dsonar.projectName='quest-boot'"
+                    }
+                }
+            }
+
+        }
+
+        stage('Docker build') {
+            steps {
+                dir('biblio'){
+                    sh 'docker build -t bilbio-boot .'
+                }
+            }
+        }
+    }
+}
