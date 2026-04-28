@@ -1,9 +1,6 @@
-#Le nom du compose
 name: demo-compose
 
-# Description des différents containers
 services:
-  #Desription du container mysql
   mysql:
     image: mysql:8.0.45
     container_name: mysql
@@ -11,15 +8,12 @@ services:
       MYSQL_DATABASE: biblio
       MYSQL_ROOT_PASSWORD: root
     volumes:
-      #POur initialiser la base
-      #- ./bibliotek-init.sql:/docker-entrypoint-initdb.d/init.sql
-      #POur persister les data apres supression / mise a jour du container
       - mysql-data:/var/lib/mysql
     networks:
       - devops
     ports:
       - 3307:3306
-    healthcheck: #test pour verifier que le service soit pret
+    healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
       timeout: 3s
       retries: 10
@@ -37,31 +31,22 @@ services:
       SPRING_DATASOURCE_PASSWORD: root
     ports:
       - 8080:8080
-    #dit au container java d'attendre la mise en place du container mysql
     depends_on:
-      #- mysql
-      mysql: #ici on attends que mysql demarre et que le service soit pret a être utilisé
+      mysql:
         condition: service_healthy
-      #postgres:
-      #condition: service_healthy
 
   biblio-angular:
-    #le chemin de l'image dans le dockerfile
     image: ajc/biblio-angular
-
     container_name: biblio-angular
-
     networks:
-      - quest
-
+      - devops
     ports:
       - 4200:80
-
     depends_on:
       - biblio-app
 
 networks:
-  quest:
+  devops:
     name: devops
 
 volumes:
