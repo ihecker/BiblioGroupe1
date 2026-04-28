@@ -17,7 +17,7 @@ pipeline {
             }
 
             steps {
-                dir('biblio-boot') {
+                dir('biblio') {
                     withSonarQubeEnv('sonarqube-server') {
                         sh "mvn verify sonar:sonar -Dsonar.projectKey=biblio-boot -Dsonar.projectName='biblio-boot'"
                     }
@@ -27,7 +27,7 @@ pipeline {
 
         stage('Docker build') {
             steps {
-                dir('quest-boot') {
+                dir('quest') {
                     sh 'docker build -t biblio-boot .'
                 }
             }
