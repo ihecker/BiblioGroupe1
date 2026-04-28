@@ -5,6 +5,7 @@ import static org.mockito.Mockito.when;
 
 import java.util.Optional;
 
+import formation.sopra.biblio.repository.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +26,9 @@ import formation.sopra.biblio.model.Collection;
 import formation.sopra.biblio.model.Editeur;
 import formation.sopra.biblio.model.Genre;
 import formation.sopra.biblio.model.Livre;
-import formation.sopra.biblio.repository.IDAOAuteur;
-import formation.sopra.biblio.repository.IDAOCollection;
-import formation.sopra.biblio.repository.IDAOEditeur;
-import formation.sopra.biblio.repository.IDAOGenre;
-import formation.sopra.biblio.repository.IDAOLivre;
-import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 @WebMvcTest(controllers = LivreController.class)
-
+@Import(SecurityConfig.class)
 public class LivreControllerTest {
     @MockitoBean
     private IDAOLivre daoLivre;
@@ -50,14 +45,14 @@ public class LivreControllerTest {
     @MockitoBean
     private IDAOCollection daoCollection;
 
-    @MockitoBean
-    private IDAOUtilisateur daoUtilisateur;
-
     @Autowired
     private MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
     // @MockitoBean
     // private JpaUserDetailsService jpaUserDetailsService;
@@ -85,35 +80,35 @@ public class LivreControllerTest {
     @Test
     void shouldFindAllStatusUnauthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(API_URL))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldFindByIdStatusUnauthorized() throws Exception {
         when(daoLivre.findById(ID)).thenReturn(Optional.of(LIVRE));
         mockMvc.perform(MockMvcRequestBuilders.get(API_URL_BY_ID))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldCreateStatusUnauthorized() throws Exception {
         when(daoLivre.save(any())).thenReturn(LIVRE);
         mockMvc.perform(MockMvcRequestBuilders.post(API_URL))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldUpdateStatusUnauthorized() throws Exception {
         when(daoLivre.save(any())).thenReturn(LIVRE);
         mockMvc.perform(MockMvcRequestBuilders.put(API_URL_BY_ID))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldDeleteByIdStatusUnauthorized() throws Exception {
         when(daoLivre.findById(ID)).thenReturn(Optional.of(LIVRE));
         mockMvc.perform(MockMvcRequestBuilders.delete(API_URL_BY_ID))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
