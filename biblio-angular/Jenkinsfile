@@ -12,12 +12,29 @@ pipeline {
             steps {
                 dir('biblio-angular') {
                     sh 'npm install'
-
-                    withSonarQubeEnv('sonar') {
-                        sh './node_modules/.bin/sonar-scanner -Dsonar.projectKey=biblio-angular'
-                    }
-
                     sh 'npm run build'
+                }
+            }
+        }
+
+        stage('SonarQube') {
+            agent {
+                docker {
+                    image 'sonarsource/sonar-scanner-cli:latest'
+                    args '--network devops -u root'
+                    reuseNode true
+                }
+            }
+            steps {
+                dir('biblio-angular') {
+                    withSonarQubeEnv('SonarQube') {
+                        sh '''
+                            sonar-scanner \
+                                -Dsonar.projectKey=biblio-angular \
+                                -Dsonar.sources=src \
+                                -Dsonar.exclusions=**/*.spec.ts,**/node_modules/**
+                        '''
+                    }
                 }
             }
         }
