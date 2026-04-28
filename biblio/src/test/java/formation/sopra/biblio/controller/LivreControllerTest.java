@@ -85,35 +85,35 @@ public class LivreControllerTest {
     @Test
     void shouldFindAllStatusUnauthorized() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get(API_URL))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldFindByIdStatusUnauthorized() throws Exception {
         when(daoLivre.findById(ID)).thenReturn(Optional.of(LIVRE));
         mockMvc.perform(MockMvcRequestBuilders.get(API_URL_BY_ID))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldCreateStatusUnauthorized() throws Exception {
         when(daoLivre.save(any())).thenReturn(LIVRE);
         mockMvc.perform(MockMvcRequestBuilders.post(API_URL))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldUpdateStatusUnauthorized() throws Exception {
         when(daoLivre.save(any())).thenReturn(LIVRE);
         mockMvc.perform(MockMvcRequestBuilders.put(API_URL_BY_ID))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
     void shouldDeleteByIdStatusUnauthorized() throws Exception {
         when(daoLivre.findById(ID)).thenReturn(Optional.of(LIVRE));
         mockMvc.perform(MockMvcRequestBuilders.delete(API_URL_BY_ID))
-                .andExpect(MockMvcResultMatchers.status().isUnauthorized());
+                .andExpect(MockMvcResultMatchers.status().isForbidden());
     }
 
     @Test
