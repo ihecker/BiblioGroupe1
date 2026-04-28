@@ -27,7 +27,7 @@ services:
 
   biblio-app:
     image: biblio-boot:latest
-    #build: ./biblio
+    build: ./biblio
     container_name: biblio-app
     networks:
       - quest
@@ -48,6 +48,7 @@ services:
   biblio-angular:
     #le chemin de l'image dans le dockerfile
     image: biblio-app:latest
+    build: ./biblio-angular
     container_name: biblio-angular
 
     networks:
