@@ -56,7 +56,8 @@ services:
 
 networks:
   quest:
-    name: quest-test
+    external: true
+    name: devops
 
 volumes:
   mysql-data:

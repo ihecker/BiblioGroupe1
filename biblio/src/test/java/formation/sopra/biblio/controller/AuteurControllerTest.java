@@ -26,6 +26,7 @@ import formation.sopra.biblio.dto.Auteur.AuteurRequest;
 import formation.sopra.biblio.dto.Auteur.AuteurResponse;
 import formation.sopra.biblio.model.Auteur;
 import formation.sopra.biblio.repository.IDAOAuteur;
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 
 @WebMvcTest(controllers = AuteurController.class)
@@ -36,6 +37,9 @@ public class AuteurControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
     //@MockitoBean
     //private JpaUserDetailsService jpaUserDetailsService;

@@ -30,6 +30,7 @@ import formation.sopra.biblio.repository.IDAOCollection;
 import formation.sopra.biblio.repository.IDAOEditeur;
 import formation.sopra.biblio.repository.IDAOGenre;
 import formation.sopra.biblio.repository.IDAOLivre;
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 @WebMvcTest(controllers = LivreController.class)
 @Import(SecurityConfig.class)
@@ -48,6 +49,9 @@ public class LivreControllerTest {
 
     @MockitoBean
     private IDAOCollection daoCollection;
+
+    @MockitoBean
+    private IDAOUtilisateur daoUtilisateur;
 
     @Autowired
     private MockMvc mockMvc;

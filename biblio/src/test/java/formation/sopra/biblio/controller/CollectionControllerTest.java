@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import formation.sopra.biblio.config.SecurityConfig;
 import formation.sopra.biblio.model.Collection;
 import formation.sopra.biblio.repository.IDAOCollection;
+import formation.sopra.biblio.repository.IDAOUtilisateur;
 
 @WebMvcTest(controllers = CollectionController.class)
 @Import(SecurityConfig.class)
@@ -41,6 +42,9 @@ public class CollectionControllerTest {
 
      @MockitoBean
     private IDAOCollection daoCollection;
+
+    @MockitoBean
+private IDAOUtilisateur daoUtilisateur;
 
     // on veut verifier si la creation d'une collection fctionne correctement
     @Test
