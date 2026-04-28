@@ -1,17 +1,14 @@
 pipeline {
     agent {
-        agent {
-            docker {
-                image 'node:20'
-                args '--network devops'
-            }
+        docker {
+            image 'node:20'
+            args '--network devops'
         }
     }
 
     stages {
-        
 
-        stage('Build') {
+        stage('Install & Build') {
             steps {
                 dir('biblio-angular') {
                     sh 'npm install'
@@ -21,14 +18,12 @@ pipeline {
         }
 
         stage('Docker build') {
-                    
-                steps {
-                    dir('biblio-angular') {
-                        sh 'docker build -t biblio-angular .'
-                    }
+            steps {
+                dir('biblio-angular') {
+                    sh 'docker build -t biblio-angular .'
                 }
-                    
             }
+        }
 
         stage('SonarQube Analysis') {
             steps {
