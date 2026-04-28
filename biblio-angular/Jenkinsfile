@@ -18,22 +18,19 @@ pipeline {
         }
 
         stage('SonarQube') {
-            agent {
-                docker {
-                    image 'sonarsource/sonar-scanner-cli:latest'
-                    args '--network devops -u root'
-                    reuseNode true
-                }
-            }
             steps {
                 dir('biblio-angular') {
-                    withSonarQubeEnv('SonarQube') {
-                        sh '''
-                            sonar-scanner \
-                                -Dsonar.projectKey=biblio-angular \
-                                -Dsonar.sources=src \
-                                -Dsonar.exclusions=**/*.spec.ts,**/node_modules/**
-                        '''
+                    script {
+                        def scannerHome = tool 'sonar-scanner'
+
+                        withSonarQubeEnv('sonar') {
+                            sh """
+                            ${scannerHome}/bin/sonar-scanner \
+                            -Dsonar.projectKey=biblio-angular \
+                            -Dsonar.sources=src \
+                            -Dsonar.host.url=http://sonar:9000
+                            """
+                        }
                     }
                 }
             }
